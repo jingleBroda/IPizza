@@ -1,0 +1,16 @@
+<resources>
+    <string name="app_name">iPizza</string>
+    <string name="menu">Menu</string>
+    <string name="namePizza">Name Pizza</string>
+    <string name="descriptionPizza">description...</string>
+    <string name="costPizza">100₽</string>
+    <string name="searchText">Search pizza</string>
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="checkOut">Checkout</string>
+    <string name="cart">Cart</string>
+    placeOrderButton
+    <string name="placeOrder">Place order</string>
+    <string name="endText1"> Order was successfully sent! </string>
+    <string name="endText2"> We will call you soon to confirm order <p> details </p> </string>
+    <string name="BackMenu"> Back to Menu </string>
+</resources>
