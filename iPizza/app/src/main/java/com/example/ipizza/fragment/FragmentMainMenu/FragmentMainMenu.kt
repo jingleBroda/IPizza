@@ -111,10 +111,15 @@ class FragmentMainMenu() : Fragment(), TextView.OnEditorActionListener{
             searchTextPizza.requestFocus()
             searchTextPizza.setOnEditorActionListener(this)
 
+            /*
+            Пока что, я решил отказаться от такой реализации, посколько во время тестов
+            я не смог пофиксить баг, при котором во время поиска нужной пиццы и открытием экрана с детальной информацией,
+            клавиатура не закрывалась. Из-за этого было принято решение пока оставить просто выделение фокуса на editText,
+            чтобы пользователь сам по нажатию на него вызывал клавиатуру.
             //открытие клавиатуры
             val imgr = requireContext().getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
             imgr.toggleSoftInput(InputMethodManager.SHOW_FORCED, InputMethodManager.HIDE_IMPLICIT_ONLY)
-
+            */
             //слушатель изменения текста в editText
             searchTextPizza.addTextChangedListener(object : TextWatcher {
                 override fun afterTextChanged(s: Editable) {
