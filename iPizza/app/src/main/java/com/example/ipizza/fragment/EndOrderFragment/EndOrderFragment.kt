@@ -9,6 +9,7 @@ import android.widget.Button
 import androidx.fragment.app.FragmentManager
 import com.example.ipizza.R
 import com.example.ipizza.contract.navigator
+import com.example.ipizza.databinding.FragmentEndOrderBinding
 
 
 class EndOrderFragment : Fragment() {
@@ -22,8 +23,9 @@ class EndOrderFragment : Fragment() {
     ): View? {
 
         root = inflater.inflate(R.layout.fragment_end_order, container, false)
+        val binding:FragmentEndOrderBinding = FragmentEndOrderBinding.bind(root)
 
-        backButton = root.findViewById(R.id.backMenuButton)
+        backButton = binding.backMenuButton
 
         backButton.setOnClickListener(){
             navigator().goBack()

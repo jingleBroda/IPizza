@@ -1,6 +1,5 @@
 package com.example.ipizza.fragment.FragmentMainMenu
 
-import android.content.Context
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
@@ -9,7 +8,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.EditorInfo
-import android.view.inputmethod.InputMethodManager
 import android.widget.Button
 import android.widget.EditText
 import android.widget.TextView
@@ -21,6 +19,8 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.ipizza.R
 import com.example.ipizza.contract.navigator
 import com.example.ipizza.dataBase.PizzaEntity
+import com.example.ipizza.databinding.FragmentMainMenuAndButtonCartBinding
+import com.example.ipizza.databinding.FragmentMainMenuBinding
 import com.example.ipizza.fragment.CartFragment.CartFragment
 import com.example.ipizza.recyclerView.AdapterHomeMenuRecyclerView
 
@@ -64,15 +64,23 @@ class FragmentMainMenu() : Fragment(), TextView.OnEditorActionListener{
         viewModel = ViewModelProvider(requireActivity()).get(FragmentMainMenuViewModel::class.java)
 
 
-
+        //val binding = FragmentMainMenuBinding.bind(root)
+        /*
+        Binding в данном фрагменте не реализовывал, поскольку для его отображения, я использую 2 лайаута(в зависимости от ситуации показа)
+        При таком подходе, просто не получаеться привезти FragmentMainMenuBinding к FragmentMainMenuAndButtonCartBinding
+        Т.е. в данной ситуации только с помощью findViewbyId получилось как задумывалось обращаться к элементам лайаутов.
+         */
 
         //проверка на наличие товаров в корзине, если они есть, то показываем экран с кнопкой перехода.
         if(cartNoNull == true) {
+
             root = inflater.inflate(
                 R.layout.fragment_main_menu_and_button_cart,
                 container,
                 false
             )
+
+            //val binding = FragmentMainMenuAndButtonCartBinding.bind(root)
 
             goCartButton = root.findViewById(R.id.goToCartinMenu)
 

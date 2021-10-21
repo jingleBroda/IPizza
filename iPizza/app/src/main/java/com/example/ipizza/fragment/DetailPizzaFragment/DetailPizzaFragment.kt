@@ -12,6 +12,7 @@ import android.widget.TextView
 import com.bumptech.glide.Glide
 import com.example.ipizza.R
 import com.example.ipizza.contract.navigator
+import com.example.ipizza.databinding.FragmentDetailPizzaBinding
 import com.example.ipizza.fragment.FragmentMainMenu.FragmentMainMenu
 
 
@@ -41,18 +42,18 @@ class DetailPizzaFragment() : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         val root = inflater.inflate(R.layout.fragment_detail_pizza, container, false)
+        val binding:FragmentDetailPizzaBinding = FragmentDetailPizzaBinding.bind(root)
 
-
-        nameDetailsTextView = root.findViewById(R.id.namePizzaDetailsTextView)
+        nameDetailsTextView = binding.namePizzaDetailsTextView
         nameDetailsTextView.text = namePizza
 
-        imgDetailsTextView = root.findViewById(R.id.imgPizzaDetailsTextView)
+        imgDetailsTextView = binding.imgPizzaDetailsTextView
         Glide.with(imgDetailsTextView)
             .load(imgPizza)
             .centerCrop()
             .into(imgDetailsTextView)
 
-        buttonGoCardDetails = root.findViewById(R.id.goCartDetailsTextView)
+        buttonGoCardDetails = binding.goCartDetailsTextView
         buttonGoCardDetails.text = costPizza
 
         backButton = root.findViewById(R.id.backButton)

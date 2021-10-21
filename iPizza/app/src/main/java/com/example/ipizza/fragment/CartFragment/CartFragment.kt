@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import android.widget.Button
 import com.example.ipizza.R
 import com.example.ipizza.contract.navigator
+import com.example.ipizza.databinding.FragmentCartBinding
 import com.example.ipizza.fragment.EndOrderFragment.EndOrderFragment
 import com.example.ipizza.fragment.FragmentMainMenu.FragmentMainMenu
 
@@ -23,7 +24,9 @@ class CartFragment : Fragment() {
 
         val root = inflater.inflate(R.layout.fragment_cart, container, false)
 
-        placeOrderButton = root.findViewById(R.id.placeOrderButton)
+        val binding:FragmentCartBinding = FragmentCartBinding.bind(root)
+
+        placeOrderButton = binding.placeOrderButton //root.findViewById(R.id.placeOrderButton)
 
 
         placeOrderButton.setOnClickListener(){

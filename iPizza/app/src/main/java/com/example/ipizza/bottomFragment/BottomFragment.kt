@@ -17,8 +17,6 @@ import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 
-//private const val COLLAPSED_HEIGHT = 228
-
 class BottomFragment() : BottomSheetDialogFragment() {
 
 
@@ -78,19 +76,19 @@ class BottomFragment() : BottomSheetDialogFragment() {
             bottomSheetBehavior.state = BottomSheetBehavior.STATE_EXPANDED
         }
 
-        namePosPizzaView = binding.root.findViewById(R.id.nameRowPizza)
+        namePosPizzaView = binding.nameRowPizza
         namePosPizzaView.text = namePizza
 
-        descriptPizzaView = binding.root.findViewById(R.id.descriptRowPizza)
+        descriptPizzaView = binding.descriptRowPizza
         descriptPizzaView.text = descriptPizza
 
-        imgPizzaView = binding.root.findViewById(R.id.previewPizza)
+        imgPizzaView = binding.previewPizza
         Glide.with(imgPizzaView)
             .load(urlImgPizza)
             .centerCrop()
             .into(imgPizzaView)
 
-        goPizzaCartButton= binding.root.findViewById(R.id.addCartButton)
+        goPizzaCartButton= binding.addCartButton
         goPizzaCartButton.text = costPizza
 
 
