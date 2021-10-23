@@ -4,7 +4,6 @@ import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.view.inputmethod.InputMethodManager
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
@@ -13,22 +12,31 @@ import androidx.fragment.app.FragmentManager
 import com.bumptech.glide.Glide
 import com.example.ipizza.bottomFragment.BottomFragment
 import com.example.ipizza.dataBase.PizzaEntity
+import com.example.ipizza.databinding.FragmentCartBinding
+import com.example.ipizza.databinding.HomeMenuRowBinding
 
 
-class AdapterHomeMenuRecyclerView(pizzaList:List<PizzaEntity>?, context: Context, manag:FragmentManager, ): RecyclerView.Adapter<AdapterHomeMenuRecyclerView.ViewHolder>() {
+class AdapterHomeMenuRecyclerView(pizzaList:List<PizzaEntity>?, context: Context ): RecyclerView.Adapter<AdapterHomeMenuRecyclerView.ViewHolder>() {
 
-    val listAdapter = pizzaList
-    val listContextResicle = context
-    val listManager = manag
+    private var listAdapter = pizzaList
+    private val listContextResicle = context
+    private var onMylistener: ((item: PizzaEntity) -> Unit)? = null
 
-    class ViewHolder(view: View):RecyclerView.ViewHolder(view) {
+    inner class ViewHolder(view: View):RecyclerView.ViewHolder(view) {
 
-        private var imagePizza : ImageView = view.findViewById(R.id.imgPizza)
-        private var namePizza : TextView = view.findViewById(R.id.namePizza)
-        private var descpirtPizza : TextView = view.findViewById(R.id.descriptPizza)
-        private var costPizza : TextView = view.findViewById(R.id.costPizza)
+        //нужно убрать findViewById и переделать на ViewBinding
+        private val binding = HomeMenuRowBinding.bind(view)
 
-        fun bind(listItem:PizzaEntity, listManager:FragmentManager, listContextResicle:Context){
+        private var imagePizza : ImageView = binding.imgPizza
+        private var namePizza : TextView = binding.namePizza
+        private var descpirtPizza : TextView = binding.descriptPizza
+        private var costPizza : TextView = binding.costPizza
+
+        init {
+            imagePizza.setOnClickListener{ onMylistener?.invoke(listAdapter!!.get(adapterPosition)) }
+        }
+
+        fun bind(listItem: PizzaEntity){
 
             Glide.with(imagePizza)
                 .load(listItem.imageUrl)
@@ -41,23 +49,17 @@ class AdapterHomeMenuRecyclerView(pizzaList:List<PizzaEntity>?, context: Context
             costPizza.text = listItem.price.toString()+"₽"
 
 
-            imagePizza.setOnClickListener() {
-
-                /*
-                //закрытие клавиатуры
-                val imgr =
-                    listContextResicle.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
-                imgr.toggleSoftInput(InputMethodManager.HIDE_IMPLICIT_ONLY, 0)
-                */
-
-                val bottomFragment:BottomFragment = BottomFragment.myNewInstance(
-                    listItem.id
-                )
-                bottomFragment.show(listManager, "tag")
-
-            }
         }
 
+    }
+
+    fun update(pizzaList:List<PizzaEntity>?){
+        listAdapter = pizzaList
+        notifyDataSetChanged()
+    }
+
+    fun setOnImgItemClickListener(listener: (item: PizzaEntity) -> Unit) {
+        this.onMylistener = listener
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
@@ -67,7 +69,7 @@ class AdapterHomeMenuRecyclerView(pizzaList:List<PizzaEntity>?, context: Context
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int, ) {
         val listIteam = listAdapter!!.get(position)
-        holder.bind(listIteam,listManager, listContextResicle)
+        holder.bind(listIteam)
     }
 
     override fun getItemCount(): Int {

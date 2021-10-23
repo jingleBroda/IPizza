@@ -31,9 +31,9 @@ class DetailPizzaFragment() : Fragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        imgPizza = requireArguments().getString("imgPizza", "")
-        namePizza = requireArguments().getString("namePizza", "")
-        costPizza = requireArguments().getString("costPizza", "")
+        imgPizza = requireArguments().getString(fragmentArg1, "")
+        namePizza = requireArguments().getString(fragmentArg2, "")
+        costPizza = requireArguments().getString(fragmentArg3, "")
 
     }
 
@@ -63,6 +63,11 @@ class DetailPizzaFragment() : Fragment() {
     }
 
 companion object {
+
+    val fragmentArg1 = "imgPizza"
+    val fragmentArg2 = "namePizza"
+    val fragmentArg3 = "costPizza"
+
      fun newInstance(
          urlImgPizza: String,
          namePizza: String,
@@ -70,9 +75,9 @@ companion object {
     ): DetailPizzaFragment {
         val detailPizzaFragment = DetailPizzaFragment()
         val args = Bundle()
-        args.putString("imgPizza", urlImgPizza)
-        args.putString("namePizza", namePizza)
-        args.putString("costPizza", costPizza)
+        args.putString(fragmentArg1, urlImgPizza)
+        args.putString(fragmentArg2, namePizza)
+        args.putString(fragmentArg3, costPizza)
 
         detailPizzaFragment.arguments = args
 

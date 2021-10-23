@@ -34,6 +34,8 @@ class BottomFragment() : BottomSheetDialogFragment() {
     private lateinit var imgPizzaView:ImageView
     private lateinit var goPizzaCartButton:Button
 
+    //ДОБАВИТЬ КОНСТАНТЫ ДЛЯ КЛЮЧЕЙ В NEWINSTANCE
+
     // Переопределим тему, чтобы использовать нашу с закруглёнными углами
     override fun getTheme() = R.style.AppBottomSheetDialogTheme
 
@@ -42,7 +44,7 @@ class BottomFragment() : BottomSheetDialogFragment() {
 
         viewModel = ViewModelProvider(requireActivity()).get(FragmentMainMenuViewModel::class.java)
         //получаем id пиццы
-        idPizza = requireArguments().getInt("idPizza", 0)
+        idPizza = requireArguments().getInt(fragmentArg1, 0)
 
         //вытаскиваем из бд данную пиццу
         val selectedItemPizza = viewModel.concretItemLiveData(idPizza)
@@ -56,12 +58,15 @@ class BottomFragment() : BottomSheetDialogFragment() {
     }
 
     companion object {
+
+        val fragmentArg1 = "idPizza"
+
         fun myNewInstance(
             idPizza:Int
         ):BottomFragment{
             val bottomFragment = BottomFragment()
             val args = Bundle()
-            args.putInt("idPizza", idPizza)
+            args.putInt(fragmentArg1, idPizza)
             bottomFragment.setArguments(args)
             return bottomFragment
         }

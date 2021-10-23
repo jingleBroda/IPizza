@@ -10,6 +10,7 @@ import android.view.ViewGroup
 import android.view.inputmethod.EditorInfo
 import android.widget.Button
 import android.widget.EditText
+import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
@@ -17,9 +18,9 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.ipizza.R
+import com.example.ipizza.bottomFragment.BottomFragment
 import com.example.ipizza.contract.navigator
 import com.example.ipizza.dataBase.PizzaEntity
-import com.example.ipizza.databinding.FragmentMainMenuAndButtonCartBinding
 import com.example.ipizza.databinding.FragmentMainMenuBinding
 import com.example.ipizza.fragment.CartFragment.CartFragment
 import com.example.ipizza.recyclerView.AdapterHomeMenuRecyclerView
@@ -27,62 +28,85 @@ import com.example.ipizza.recyclerView.AdapterHomeMenuRecyclerView
 
 class FragmentMainMenu() : Fragment(), TextView.OnEditorActionListener{
 
+    private lateinit var binding:FragmentMainMenuBinding
+
     private lateinit var mainRecView:RecyclerView
+    private lateinit var adapter:AdapterHomeMenuRecyclerView
     private lateinit var searchButton:Button
     private lateinit var searchTextPizza:EditText
     private lateinit var textMenu:TextView
     private lateinit var goCartButton:Button
+    private lateinit var layoutButtonCart:LinearLayout
 
     private lateinit var root:View
     private lateinit var viewModel:FragmentMainMenuViewModel
     private lateinit var pizzaList:List<PizzaEntity>
+
 
     private var cartNoNull:Boolean = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        cartNoNull = requireArguments().getBoolean("cartNoNull", false)
+        //"cartNoNull" НУЖНО СДЕЛАТЬ КОНСТАНТОЙ
+
+        cartNoNull = requireArguments().getBoolean(fragmentArg1, false)
 
     }
 
 
         companion object {
+
+            val  fragmentArg1 = "cartNoNull"
+
             fun newInstance(
                 cartNoNull: Boolean
             ): FragmentMainMenu {
                 val args = Bundle()
-                args.putBoolean("cartNoNull", cartNoNull)
+
+                args.putBoolean(fragmentArg1, cartNoNull)
                 val fragment = FragmentMainMenu()
                 fragment.arguments = args
                 return fragment
             }
         }
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-
         root = inflater.inflate(R.layout.fragment_main_menu, container, false)
+
+        initUI()
+
+        return root
+    }
+
+    fun initRecView(){
+        //Тест использования предоставленной БД
+        pizzaList = viewModel.liveData.value!!
+
+        adapter = AdapterHomeMenuRecyclerView(pizzaList,requireContext())
+        adapter.setOnImgItemClickListener{ listItem ->
+            val bottomFragment: BottomFragment = BottomFragment.myNewInstance(
+                listItem.id
+            )
+
+            bottomFragment.show(requireActivity().supportFragmentManager, "tag")
+        }
+        mainRecView.adapter =  adapter
+    }
+
+    fun initUI(){
         viewModel = ViewModelProvider(requireActivity()).get(FragmentMainMenuViewModel::class.java)
 
+        binding = FragmentMainMenuBinding.bind(root)
 
-        //val binding = FragmentMainMenuBinding.bind(root)
-        /*
-        Binding в данном фрагменте не реализовывал, поскольку для его отображения, я использую 2 лайаута(в зависимости от ситуации показа)
-        При таком подходе, просто не получаеться привезти FragmentMainMenuBinding к FragmentMainMenuAndButtonCartBinding
-        Т.е. в данной ситуации только с помощью findViewbyId получилось как задумывалось обращаться к элементам лайаутов.
-         */
 
         //проверка на наличие товаров в корзине, если они есть, то показываем экран с кнопкой перехода.
         if(cartNoNull == true) {
 
-            root = inflater.inflate(
-                R.layout.fragment_main_menu_and_button_cart,
-                container,
-                false
-            )
+            layoutButtonCart = binding.layoutButtonCart
+            //Я ПРОСТО НЕ ЗНАЛ ПРО VIEW,GONE, АХАХААХХА
+            layoutButtonCart.visibility = View.VISIBLE
 
-            //val binding = FragmentMainMenuAndButtonCartBinding.bind(root)
-
-            goCartButton = root.findViewById(R.id.goToCartinMenu)
+            goCartButton = binding.goToCartinMenu
 
             goCartButton.setOnClickListener(){
                 val fragment = CartFragment()
@@ -92,20 +116,21 @@ class FragmentMainMenu() : Fragment(), TextView.OnEditorActionListener{
 
         }
 
-        searchButton = root.findViewById(R.id.searchButton)
+        searchButton = binding.searchButton
 
-        searchTextPizza = root.findViewById(R.id.searchPizza)
+        searchTextPizza = binding.searchPizza
 
-        textMenu = root.findViewById(R.id.menuText)
+        textMenu = binding.menuText
 
-        mainRecView = root.findViewById(R.id.assortiPizza)
+        mainRecView = binding.assortiPizza
         mainRecView.hasFixedSize()
         mainRecView.layoutManager= LinearLayoutManager(activity)
+        initRecView()
 
+    }
 
-        //Тест использования предоставленной БД
-        pizzaList = viewModel.liveData.value!!
-
+    override fun onStart() {
+        super.onStart()
         //нажатие на кнопку поиска
         searchButton.setOnClickListener(){
             //скрытие кнопки и надписи
@@ -142,7 +167,7 @@ class FragmentMainMenu() : Fragment(), TextView.OnEditorActionListener{
                         }
                     }
                     //перерисовываем recycler с подходящими по названию пиццами
-                    mainRecView.adapter =  AdapterHomeMenuRecyclerView(newPizzaList,requireContext(), requireActivity().supportFragmentManager)
+                    adapter.update(newPizzaList)
                 }
 
                 override fun beforeTextChanged(
@@ -157,11 +182,6 @@ class FragmentMainMenu() : Fragment(), TextView.OnEditorActionListener{
             })
 
         }
-
-        //supportFragmentManager передается для того, чтобы отобразить bottomFragment
-        mainRecView.adapter =  AdapterHomeMenuRecyclerView(pizzaList,requireContext(), requireActivity().supportFragmentManager)
-
-        return root
     }
 
     //обработка нажатия клавиши done на клавиатуре
