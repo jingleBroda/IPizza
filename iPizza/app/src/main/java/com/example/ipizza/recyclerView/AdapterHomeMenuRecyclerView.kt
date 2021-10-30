@@ -14,17 +14,17 @@ import com.example.ipizza.bottomFragment.BottomFragment
 import com.example.ipizza.dataBase.PizzaEntity
 import com.example.ipizza.databinding.FragmentCartBinding
 import com.example.ipizza.databinding.HomeMenuRowBinding
+import com.example.ipizza.retrofit.PizzaModel
 
 
-class AdapterHomeMenuRecyclerView(pizzaList:List<PizzaEntity>?, context: Context ): RecyclerView.Adapter<AdapterHomeMenuRecyclerView.ViewHolder>() {
+class AdapterHomeMenuRecyclerView(pizzaList:List<PizzaModel>?, context: Context ): RecyclerView.Adapter<AdapterHomeMenuRecyclerView.ViewHolder>() {
 
     private var listAdapter = pizzaList
     private val listContextResicle = context
-    private var onMylistener: ((item: PizzaEntity) -> Unit)? = null
+    private var onMylistener: ((item: PizzaModel) -> Unit)? = null
 
     inner class ViewHolder(view: View):RecyclerView.ViewHolder(view) {
 
-        //нужно убрать findViewById и переделать на ViewBinding
         private val binding = HomeMenuRowBinding.bind(view)
 
         private var imagePizza : ImageView = binding.imgPizza
@@ -36,16 +36,16 @@ class AdapterHomeMenuRecyclerView(pizzaList:List<PizzaEntity>?, context: Context
             imagePizza.setOnClickListener{ onMylistener?.invoke(listAdapter!!.get(adapterPosition)) }
         }
 
-        fun bind(listItem: PizzaEntity){
+        fun bind(listItem: PizzaModel){
 
             Glide.with(imagePizza)
-                .load(listItem.imageUrl)
+                .load(listItem.imageUrls?.get(0))
                 .centerCrop()
                 .into(imagePizza)
 
 
             namePizza.text = listItem.name
-            descpirtPizza.text = listItem.description.substring(0,34) + "..."
+            descpirtPizza.text = listItem.description?.substring(0,34) + "..."
             costPizza.text = listItem.price.toString()+"₽"
 
 
@@ -53,12 +53,12 @@ class AdapterHomeMenuRecyclerView(pizzaList:List<PizzaEntity>?, context: Context
 
     }
 
-    fun update(pizzaList:List<PizzaEntity>?){
+    fun update(pizzaList:List<PizzaModel>?){
         listAdapter = pizzaList
         notifyDataSetChanged()
     }
 
-    fun setOnImgItemClickListener(listener: (item: PizzaEntity) -> Unit) {
+    fun setOnImgItemClickListener(listener: (item: PizzaModel) -> Unit) {
         this.onMylistener = listener
     }
 

@@ -13,6 +13,7 @@ import com.example.ipizza.databinding.BottomSheetLayoutBinding
 import com.example.ipizza.fragment.DetailPizzaFragment.DetailPizzaFragment
 import com.example.ipizza.fragment.FragmentMainMenu.FragmentMainMenu
 import com.example.ipizza.fragment.FragmentMainMenu.FragmentMainMenuViewModel
+import com.example.ipizza.retrofit.PizzaModel
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
@@ -43,30 +44,36 @@ class BottomFragment() : BottomSheetDialogFragment() {
         super.onCreate(savedInstanceState)
 
         viewModel = ViewModelProvider(requireActivity()).get(FragmentMainMenuViewModel::class.java)
-        //получаем id пиццы
-        idPizza = requireArguments().getInt(fragmentArg1, 0)
-
-        //вытаскиваем из бд данную пиццу
-        val selectedItemPizza = viewModel.concretItemLiveData(idPizza)
 
 
-       urlImgPizza = selectedItemPizza.imageUrl
-       namePizza = selectedItemPizza.name
-       descriptPizza = selectedItemPizza.description
-       costPizza = selectedItemPizza.price.toString()+"₽"
+       urlImgPizza = requireArguments().getString(fragmentArg1, "")
+       namePizza = requireArguments().getString(fragmentArg2, "")
+       descriptPizza = requireArguments().getString(fragmentArg3, "")
+       costPizza = requireArguments().getInt(fragmentArg4, 0).toString()+"₽"
         
     }
 
     companion object {
 
-        val fragmentArg1 = "idPizza"
+        val fragmentArg1 = "imgPizza"
+        val fragmentArg2 = "namePizza"
+        val fragmentArg3 = "descriptPizza"
+        val fragmentArg4 = "costPizza"
 
         fun myNewInstance(
-            idPizza:Int
+            imgPizza:String,
+            namePizza:String,
+            descriptPizza:String,
+            costPizza:Int
         ):BottomFragment{
             val bottomFragment = BottomFragment()
             val args = Bundle()
-            args.putInt(fragmentArg1, idPizza)
+
+            args.putString(fragmentArg1, imgPizza)
+            args.putString(fragmentArg2, namePizza)
+            args.putString(fragmentArg3, descriptPizza)
+            args.putInt(fragmentArg4, costPizza)
+
             bottomFragment.setArguments(args)
             return bottomFragment
         }
