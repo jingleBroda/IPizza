@@ -97,8 +97,15 @@ companion object {
         })
 
 
+        //я буду исправлять это недоразумение, но пока у меня не получилось найти информацию, как сделать выравнивание
+        //как в макете
         buttonGoCardDetails = binding.goCartDetailsTextView
-        buttonGoCardDetails.text = costPizza
+        buttonGoCardDetails.text = "Add to cart                                   "+costPizza
+
+
+
+
+
 
         backButton = binding.backButton
 

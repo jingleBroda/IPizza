@@ -48,6 +48,7 @@
         android:layout_marginEnd="50dp"
         android:background="@drawable/button_end"
         android:text="@string/BackMenu"
+        android:textAllCaps="false"
         android:textColor="#000000"
         android:textColorHint="@color/white"
         app:layout_constraintBottom_toBottomOf="parent"

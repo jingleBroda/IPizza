@@ -7,12 +7,8 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
-import com.example.ipizza.R
-import androidx.fragment.app.FragmentManager
 import com.bumptech.glide.Glide
-import com.example.ipizza.bottomFragment.BottomFragment
-import com.example.ipizza.dataBase.PizzaEntity
-import com.example.ipizza.databinding.FragmentCartBinding
+import com.example.ipizza.R
 import com.example.ipizza.databinding.HomeMenuRowBinding
 import com.example.ipizza.retrofit.PizzaModel
 

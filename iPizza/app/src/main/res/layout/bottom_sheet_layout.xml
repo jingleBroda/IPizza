@@ -90,13 +90,13 @@
             android:layout_marginBottom="15dp"
             android:fontFamily="@font/lato_black"
             android:paddingLeft="20dp"
-            android:paddingTop="10dp"
-            android:paddingBottom="10dp"
+            android:paddingTop="20dp"
+            android:paddingBottom="20dp"
             android:text="@string/add_to_cart"
 
             android:textAlignment="viewStart"
             android:textAllCaps="false"
-            android:textColor="#000000" />
+            android:textColor="#424242" />
     </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
