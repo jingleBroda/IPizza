@@ -4,63 +4,70 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="@android:drawable/editbox_background">
+    android:background="@drawable/background"
+    android:layout_marginBottom="12dp"
+    android:layout_marginTop="20dp">
 
     <TextView
         android:id="@+id/namePizza"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
+        android:layout_marginStart="13dp"
+        android:layout_marginTop="20dp"
         android:fontFamily="@font/lato_regular"
         android:text="TextView"
         android:textColor="#000000"
         android:textSize="24sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="@+id/cardView"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/cardView"
         tools:text="@string/namePizza" />
 
     <TextView
         android:id="@+id/descriptPizza"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
-        android:layout_marginBottom="32dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginBottom="11dp"
         android:text="@string/descriptionPizza"
         android:textColor="#000000"
         android:textSize="12sp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/costPizza"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="@+id/namePizza"
-        app:layout_constraintTop_toBottomOf="@+id/namePizza" />
+        app:layout_constraintTop_toBottomOf="@+id/namePizza"
+        app:layout_constraintVertical_bias="0.0" />
 
     <TextView
         android:id="@+id/costPizza"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginEnd="14dp"
+        android:layout_marginBottom="15dp"
         android:fontFamily="@font/lato_bold"
         android:text="@string/costPizza"
         android:textColor="#000000"
-        android:textSize="24sp"
-        app:layout_constraintBottom_toBottomOf="@+id/descriptPizza"
+        android:textSize="22sp"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="@+id/cardView"
-        app:layout_constraintHorizontal_bias="1.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/descriptPizza" />
+        app:layout_constraintHorizontal_bias="0.994"
+        app:layout_constraintStart_toStartOf="parent" />
 
     <androidx.cardview.widget.CardView
         android:id="@+id/cardView"
-        android:layout_width="300dp"
+        android:layout_width="0dp"
         android:layout_height="130dp"
-        android:layout_margin="5dp"
+        android:layout_margin="0dp"
         android:background="#FFFFFF"
         android:elevation="10dp"
+        android:textAlignment="center"
         app:cardBackgroundColor="#FFFFFF"
         app:cardCornerRadius="10dp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.494"
+        app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
@@ -72,4 +79,5 @@
             android:scaleType="centerCrop"
             app:srcCompat="@drawable/pizza_1" />
     </androidx.cardview.widget.CardView>
+
 </androidx.constraintlayout.widget.ConstraintLayout>

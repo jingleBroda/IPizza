@@ -33,7 +33,8 @@ class AdapterHomeMenuRecyclerView(pizzaList:List<PizzaModel>?, context: Context 
         private var costPizza : TextView = binding.costPizza
 
         init {
-            imagePizza.setOnClickListener{ onMylistener?.invoke(listAdapter!!.get(adapterPosition)) }
+
+            view.setOnClickListener{ onMylistener?.invoke(listAdapter!!.get(adapterPosition)) }
         }
 
         fun bind(listItem: PizzaModel){
@@ -58,7 +59,7 @@ class AdapterHomeMenuRecyclerView(pizzaList:List<PizzaModel>?, context: Context 
         notifyDataSetChanged()
     }
 
-    fun setOnImgItemClickListener(listener: (item: PizzaModel) -> Unit) {
+    fun setOnItemClickListener(listener: (item: PizzaModel) -> Unit) {
         this.onMylistener = listener
     }
 

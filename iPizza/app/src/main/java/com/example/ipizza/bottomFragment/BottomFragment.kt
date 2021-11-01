@@ -10,10 +10,9 @@ import com.bumptech.glide.Glide
 import com.example.ipizza.R
 import com.example.ipizza.contract.navigator
 import com.example.ipizza.databinding.BottomSheetLayoutBinding
-import com.example.ipizza.fragment.DetailPizzaFragment.DetailPizzaFragment
+import com.example.ipizza.fragment.PreviewPizzaFragment.PreviewPizzaFragment
 import com.example.ipizza.fragment.FragmentMainMenu.FragmentMainMenu
 import com.example.ipizza.fragment.FragmentMainMenu.FragmentMainMenuViewModel
-import com.example.ipizza.retrofit.PizzaModel
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
@@ -24,7 +23,7 @@ class BottomFragment() : BottomSheetDialogFragment() {
     private lateinit var binding: BottomSheetLayoutBinding
     private lateinit var viewModel: FragmentMainMenuViewModel
 
-    private var urlImgPizza:String = ""
+    private var urlImgPizza:ArrayList<String> = ArrayList()
     private var namePizza:String = ""
     private var descriptPizza:String = ""
     private var costPizza:String = ""
@@ -35,9 +34,6 @@ class BottomFragment() : BottomSheetDialogFragment() {
     private lateinit var imgPizzaView:ImageView
     private lateinit var goPizzaCartButton:Button
 
-    //ДОБАВИТЬ КОНСТАНТЫ ДЛЯ КЛЮЧЕЙ В NEWINSTANCE
-
-    // Переопределим тему, чтобы использовать нашу с закруглёнными углами
     override fun getTheme() = R.style.AppBottomSheetDialogTheme
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -46,7 +42,7 @@ class BottomFragment() : BottomSheetDialogFragment() {
         viewModel = ViewModelProvider(requireActivity()).get(FragmentMainMenuViewModel::class.java)
 
 
-       urlImgPizza = requireArguments().getString(fragmentArg1, "")
+       urlImgPizza = requireArguments().getStringArrayList(fragmentArg1) as ArrayList<String>
        namePizza = requireArguments().getString(fragmentArg2, "")
        descriptPizza = requireArguments().getString(fragmentArg3, "")
        costPizza = requireArguments().getInt(fragmentArg4, 0).toString()+"₽"
@@ -61,7 +57,7 @@ class BottomFragment() : BottomSheetDialogFragment() {
         val fragmentArg4 = "costPizza"
 
         fun myNewInstance(
-            imgPizza:String,
+            imgPizza:ArrayList<String>,
             namePizza:String,
             descriptPizza:String,
             costPizza:Int
@@ -69,7 +65,7 @@ class BottomFragment() : BottomSheetDialogFragment() {
             val bottomFragment = BottomFragment()
             val args = Bundle()
 
-            args.putString(fragmentArg1, imgPizza)
+            args.putStringArrayList(fragmentArg1, imgPizza)
             args.putString(fragmentArg2, namePizza)
             args.putString(fragmentArg3, descriptPizza)
             args.putInt(fragmentArg4, costPizza)
@@ -96,12 +92,15 @@ class BottomFragment() : BottomSheetDialogFragment() {
 
         imgPizzaView = binding.previewPizza
         Glide.with(imgPizzaView)
-            .load(urlImgPizza)
+            .load(urlImgPizza[0])
             .centerCrop()
             .into(imgPizzaView)
 
         goPizzaCartButton= binding.addCartButton
-        goPizzaCartButton.text = costPizza
+
+        //я буду исправлять это недоразумение, но пока у меня не получилось найти информацию, как сделать выравнивание
+        //как в макете
+        goPizzaCartButton.text = "Add to cart                                                          "+costPizza
 
 
 
@@ -130,7 +129,7 @@ class BottomFragment() : BottomSheetDialogFragment() {
 
             this.dismiss()
 
-            val fragment = DetailPizzaFragment.newInstance(urlImgPizza,namePizza, costPizza)
+            val fragment = PreviewPizzaFragment.newInstance(urlImgPizza,namePizza, costPizza)
 
             navigator().showNewScreen(fragment)
 
