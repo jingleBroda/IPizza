@@ -16,7 +16,7 @@ import com.example.ipizza.retrofit.PizzaModel
 class AdapterHomeMenuRecyclerView(pizzaList:List<PizzaModel>?, context: Context ): RecyclerView.Adapter<AdapterHomeMenuRecyclerView.ViewHolder>() {
 
     private var listAdapter = pizzaList
-    private val listContextResicle = context
+    private val listContextRecycler = context
     private var onMylistener: ((item: PizzaModel) -> Unit)? = null
 
     inner class ViewHolder(view: View):RecyclerView.ViewHolder(view) {
@@ -60,7 +60,7 @@ class AdapterHomeMenuRecyclerView(pizzaList:List<PizzaModel>?, context: Context 
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        val inflater = LayoutInflater.from(listContextResicle)
+        val inflater = LayoutInflater.from(listContextRecycler)
         return ViewHolder(inflater.inflate(R.layout.home_menu_row, parent,false))
     }
 

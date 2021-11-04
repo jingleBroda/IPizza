@@ -10,6 +10,7 @@ import androidx.lifecycle.ViewModelProvider
 import com.bumptech.glide.Glide
 import com.example.ipizza.R
 import com.example.ipizza.contract.navigator
+import com.example.ipizza.dataBase.CartModel
 import com.example.ipizza.databinding.BottomSheetLayoutBinding
 import com.example.ipizza.fragment.PreviewPizzaFragment.PreviewPizzaFragment
 import com.example.ipizza.fragment.FragmentMainMenu.FragmentMainMenu
@@ -83,8 +84,9 @@ class BottomFragment() : BottomSheetDialogFragment() {
         viewModel.getSpecificPizza {
             namePizza = it.name
             descriptPizza = it.description
-            costPizza = it.price.toString() + "₽"
+            costPizza = it.price.toString()
             urlImgPizza = it.imageUrls!!
+
 
             namePosPizzaView = binding.nameRowPizza
             namePosPizzaView.text = namePizza
@@ -103,9 +105,17 @@ class BottomFragment() : BottomSheetDialogFragment() {
             //я буду исправлять это недоразумение, но пока у меня не получилось найти информацию, как сделать выравнивание
             //как в макете
             goPizzaCartButton.text =
-                "Add to cart                                                          " + costPizza
+                "Add to cart                                                          " + costPizza+ "₽"
 
             goPizzaCartButton.setOnClickListener() {
+
+                val tmpOrder = CartModel()
+                tmpOrder.imgUrl = urlImgPizza[0]
+                tmpOrder.price = costPizza.toInt()
+                tmpOrder.quantity = 1
+                tmpOrder.name = namePizza
+                viewModel.insertOrderDataRoom(tmpOrder)
+
 
                 val fragment = FragmentMainMenu.newInstance(true)
 

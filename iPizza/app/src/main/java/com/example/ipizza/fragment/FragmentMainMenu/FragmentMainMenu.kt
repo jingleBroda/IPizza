@@ -1,8 +1,10 @@
 package com.example.ipizza.fragment.FragmentMainMenu
 
+import android.opengl.Visibility
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
+import android.util.Log
 import android.view.KeyEvent
 import android.view.LayoutInflater
 import android.view.View
@@ -20,6 +22,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.ipizza.R
 import com.example.ipizza.bottomFragment.BottomFragment
 import com.example.ipizza.contract.navigator
+import com.example.ipizza.dataBase.CartModel
 import com.example.ipizza.databinding.FragmentMainMenuBinding
 import com.example.ipizza.fragment.CartFragment.CartFragment
 import com.example.ipizza.recyclerView.AdapterHomeMenuRecyclerView
@@ -27,7 +30,6 @@ import com.example.ipizza.retrofit.PizzaModel
 
 
 class FragmentMainMenu() : Fragment(), TextView.OnEditorActionListener{
-
 
     private var tmpList:List<PizzaModel> = ArrayList()
 
@@ -43,10 +45,6 @@ class FragmentMainMenu() : Fragment(), TextView.OnEditorActionListener{
 
     private lateinit var root:View
     private lateinit var viewModel:FragmentMainMenuViewModel
-
-
-
-
 
     private var cartNoNull:Boolean = false
 
@@ -85,12 +83,18 @@ class FragmentMainMenu() : Fragment(), TextView.OnEditorActionListener{
         binding = FragmentMainMenuBinding.bind(root)
 
         //проверка на наличие товаров в корзине, если они есть, то показываем экран с кнопкой перехода.
-        if(cartNoNull == true) {
+        if(cartNoNull) {
 
             layoutButtonCart = binding.layoutButtonCart
             layoutButtonCart.visibility = View.VISIBLE
 
             goCartButton = binding.goToCartinMenu
+
+            viewModel.getAllOrder {
+                val costOrder = showCostOrder(it)
+                goCartButton.text =
+                    "Checkout                                                       " + costOrder.toString() + "₽"
+            }
 
             goCartButton.setOnClickListener(){
                 val fragment = CartFragment()
@@ -99,6 +103,8 @@ class FragmentMainMenu() : Fragment(), TextView.OnEditorActionListener{
             }
 
         }
+
+
 
         searchButton = binding.searchButton
 
@@ -110,7 +116,7 @@ class FragmentMainMenu() : Fragment(), TextView.OnEditorActionListener{
         mainRecView.hasFixedSize()
         mainRecView.layoutManager= LinearLayoutManager(activity)
 
-        //TEST RETROFITE
+
         adapter = AdapterHomeMenuRecyclerView(tmpList,requireContext())
 
         adapter.setOnItemClickListener{ listItem ->
@@ -118,8 +124,6 @@ class FragmentMainMenu() : Fragment(), TextView.OnEditorActionListener{
 
             bottomFragment.show(requireActivity().supportFragmentManager, "tag")
         }
-
-
 
         viewModel.insertDataRoom()
 
@@ -131,12 +135,38 @@ class FragmentMainMenu() : Fragment(), TextView.OnEditorActionListener{
 
         viewModel.makeApiCallPizza()
 
+        //viewModel.getOrderDataRoom()
+
         mainRecView.adapter =  adapter
-        //
+
+    }
+
+    fun showCostOrder(list:List<CartModel>):Int{
+        var rez=0
+
+        for(i in list.indices){
+            rez +=list[i].price*list[i].quantity
+        }
+        return rez
+    }
+
+
+    override fun onResume() {
+        super.onResume()
+        viewModel.getOrderDataRoom()
     }
 
     override fun onStart() {
         super.onStart()
+
+
+        if(cartNoNull) {
+            viewModel.getAllOrder {
+                val costOrder = showCostOrder(it)
+                goCartButton.text =
+                    "Checkout                                                                     " + costOrder.toString() + "₽"
+            }
+        }
 
         searchButton.setOnClickListener(){
             //скрытие кнопки и надписи

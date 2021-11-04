@@ -10,11 +10,14 @@ import android.widget.Button
 import android.widget.ImageButton
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.lifecycle.ViewModelProvider
 import androidx.viewpager2.widget.ViewPager2
 import com.example.ipizza.R
 import com.example.ipizza.contract.navigator
+import com.example.ipizza.dataBase.CartModel
 import com.example.ipizza.databinding.FragmentPreviewPizzaBinding
 import com.example.ipizza.fragment.FragmentMainMenu.FragmentMainMenu
+import com.example.ipizza.fragment.FragmentMainMenu.FragmentMainMenuViewModel
 import com.example.ipizza.viewPager.AdapterViewPager
 
 
@@ -33,6 +36,8 @@ class PreviewPizzaFragment() : Fragment() {
 
     private lateinit var adapterVP: AdapterViewPager
     private lateinit var customeViewPager:ViewPager2
+
+    private lateinit var viewModel: FragmentMainMenuViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -72,6 +77,7 @@ companion object {
     ): View? {
         val root = inflater.inflate(R.layout.fragment_preview_pizza, container, false)
         val binding:FragmentPreviewPizzaBinding = FragmentPreviewPizzaBinding.bind(root)
+        viewModel = ViewModelProvider(requireActivity()).get(FragmentMainMenuViewModel::class.java)
 
         nameDetailsTextView = binding.namePizzaDetailsTextView
         nameDetailsTextView.text = namePizza
@@ -122,10 +128,22 @@ companion object {
         }
 
         buttonGoCardDetails.setOnClickListener(){
+            val tmpOrder = CartModel()
+            tmpOrder.imgUrl = imgPizza[0]
+            tmpOrder.price = costPizza.toInt()
+            tmpOrder.quantity = 1
+            tmpOrder.name = namePizza
+            viewModel.insertOrderDataRoom(tmpOrder)
+
             val fragment = FragmentMainMenu.newInstance(true)
             navigator().replaceMainMenu(fragment, true)
         }
 
+    }
+
+    override fun onDestroy() {
+        viewModel.clearComposite()
+        super.onDestroy()
     }
 
 

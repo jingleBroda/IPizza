@@ -30,11 +30,15 @@
         <entry key="..\:/AndroidAPP/iPizza/app/src/main/res/layout/screen_fragment_main_menu_and_button_cart.xml" value="0.264" />
         <entry key="..\:/GitLocalREPOS/IPizza/iPizza/app/src/main/res/drawable/bottom_sheet_background.xml" value="0.2703125" />
         <entry key="..\:/GitLocalREPOS/IPizza/iPizza/app/src/main/res/drawable/ic_baseline_search_24.xml" value="0.2703125" />
+        <entry key="..\:/GitLocalREPOS/IPizza/iPizza/app/src/main/res/drawable/ic_garbage_basket.xml" value="0.2703125" />
+        <entry key="..\:/GitLocalREPOS/IPizza/iPizza/app/src/main/res/drawable/ic_vector_minus.xml" value="0.2703125" />
+        <entry key="..\:/GitLocalREPOS/IPizza/iPizza/app/src/main/res/drawable/ic_vector_plus.xml" value="0.2703125" />
         <entry key="..\:/GitLocalREPOS/IPizza/iPizza/app/src/main/res/drawable/ic_vector_search2.xml" value="0.2703125" />
         <entry key="..\:/GitLocalREPOS/IPizza/iPizza/app/src/main/res/drawable/layout_checkout_bg.xml" value="0.2703125" />
         <entry key="..\:/GitLocalREPOS/IPizza/iPizza/app/src/main/res/layout-v26/bottom_sheet_layout.xml" value="0.24230072463768115" />
         <entry key="..\:/GitLocalREPOS/IPizza/iPizza/app/src/main/res/layout/bottom_sheet_layout.xml" value="0.4" />
-        <entry key="..\:/GitLocalREPOS/IPizza/iPizza/app/src/main/res/layout/fragment_cart.xml" value="0.23777173913043478" />
+        <entry key="..\:/GitLocalREPOS/IPizza/iPizza/app/src/main/res/layout/cart_recview_row.xml" value="0.536" />
+        <entry key="..\:/GitLocalREPOS/IPizza/iPizza/app/src/main/res/layout/fragment_cart.xml" value="0.264" />
         <entry key="..\:/GitLocalREPOS/IPizza/iPizza/app/src/main/res/layout/fragment_end_order.xml" value="0.23777173913043478" />
         <entry key="..\:/GitLocalREPOS/IPizza/iPizza/app/src/main/res/layout/fragment_main_menu.xml" value="0.4742468415937804" />
         <entry key="..\:/GitLocalREPOS/IPizza/iPizza/app/src/main/res/layout/fragment_main_menu_and_button_cart.xml" value="0.25416666666666665" />

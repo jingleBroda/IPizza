@@ -6,7 +6,7 @@ import androidx.room.TypeConverters
 import com.example.ipizza.retrofit.PizzaModel
 
 
-@Database(entities = [PizzaModel::class], version = 1, exportSchema = true)
+@Database(entities = [PizzaModel::class, CartModel::class], version = 1, exportSchema = true)
 @TypeConverters(ImgUrlConverter::class)
 abstract class PizzaDataBase:RoomDatabase() {
 

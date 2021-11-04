@@ -4,6 +4,7 @@ import android.app.Application
 import android.util.Log
 import androidx.lifecycle.AndroidViewModel
 import com.example.ipizza.App
+import com.example.ipizza.dataBase.CartModel
 import com.example.ipizza.retrofit.PizzaModel
 import com.example.ipizza.retrofit.RetrofitInstance
 import com.example.ipizza.retrofit.RetrofitServices
@@ -19,12 +20,12 @@ class FragmentMainMenuViewModel(application:Application):AndroidViewModel(applic
 
 
     //Test Room
-    //private val context = getApplication<Application>().applicationContext
     private val db = App.getInstanceApp().getDB()
     private val dbDao = db.databaseDao()
-    private var onMylistenerInsertRoom: ((item: List<PizzaModel>) -> Unit)? = null //List<PizzaModelRoom>
+    private var onMylistenerInsertRoom: ((item: List<PizzaModel>) -> Unit)? = null
     private var onMylistenerGetAllDataRoom: ((item: List<PizzaModel>) -> Unit)? = null
     private var onMylistenerGetSpecificDataRoom: ((item: PizzaModel) -> Unit)? = null
+    private var onMylistenerGetOrderDataRoom: ((item: List<CartModel>) -> Unit)? = null
     //
 
 
@@ -36,7 +37,7 @@ class FragmentMainMenuViewModel(application:Application):AndroidViewModel(applic
             .subscribeOn(Schedulers.single())
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe({pizza->
-                Log.d("ROOM1", "ZAPROS1")
+                //Log.d("ROOM1", "ZAPROS1")
 
                 onMylistenerInsertRoom?.invoke(pizza)
 
@@ -50,6 +51,67 @@ class FragmentMainMenuViewModel(application:Application):AndroidViewModel(applic
             localDisposable
         )
 
+    }
+
+    fun updateOrder(order: CartModel){
+        val zaprosDb = dbDao.updateOrder(order)
+            .subscribeOn(Schedulers.single())
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe{
+                Log.d("ROOM_update", "Произошел апдейт поля в корзине")
+            }
+
+        compositeDisposable.add(
+            zaprosDb
+        )
+    }
+
+    fun deleteOrder(){
+        val zaprosDb = dbDao.deleteOrder()
+            .subscribeOn(Schedulers.single())
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe{
+                Log.d("ROOM_deleteOrder", "DELETE")
+            }
+
+        compositeDisposable.add(
+            zaprosDb
+        )
+    }
+
+    fun insertOrderDataRoom(order:CartModel) {
+        val zaprosDb = dbDao.insertOrderPizza(order)
+            .subscribeOn(Schedulers.single())
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe{
+                Log.d("ROOM_insertOrder", "Insert")
+            }
+
+        compositeDisposable.add(
+            zaprosDb
+        )
+    }
+
+    fun getOrderDataRoom(){
+        val zaprosDb = dbDao.getOrder()
+            .subscribeOn(Schedulers.single())
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe(
+                {
+                    Log.d("ROOM_getOrder", it.toString())
+                    onMylistenerGetOrderDataRoom?.invoke(it)
+                },
+                {
+
+                }
+            )
+        compositeDisposable.add(
+            zaprosDb
+        )
+    }
+
+    fun getAllOrder(allOrder: (item: List<CartModel>) -> Unit){
+        onMylistenerGetOrderDataRoom = allOrder
     }
 
      fun searchSpecificPizza(id:Int){
@@ -80,7 +142,7 @@ class FragmentMainMenuViewModel(application:Application):AndroidViewModel(applic
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe(
                 {
-                    Log.d("ROOM3",it.toString() ) // it.size.toString()
+                   // Log.d("ROOM3",it.toString() )
                     onMylistenerGetAllDataRoom?.invoke(it)
                 },
                 {
@@ -95,14 +157,14 @@ class FragmentMainMenuViewModel(application:Application):AndroidViewModel(applic
 
     fun insertDataRoom() {
         insertPizzaRoom {
-            Log.d("ROOM2", "ZAPROS2")
+            //Log.d("ROOM2", "ZAPROS2")
             for(i in it.indices)
             {
                 val zaprosDB = dbDao.insertPizza(it[i])
                     .subscribeOn(Schedulers.single())
                     .observeOn(AndroidSchedulers.mainThread())
                     .subscribe{
-                        Log.d("ROOM_insert", it.toString())
+                        //Log.d("ROOM_insert", it.toString())
                     }
 
                 compositeDisposable.add(
