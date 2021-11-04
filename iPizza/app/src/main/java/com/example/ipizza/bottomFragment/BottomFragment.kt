@@ -1,6 +1,7 @@
 package com.example.ipizza.bottomFragment
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -41,36 +42,24 @@ class BottomFragment() : BottomSheetDialogFragment() {
 
         viewModel = ViewModelProvider(requireActivity()).get(FragmentMainMenuViewModel::class.java)
 
+        idPizza = requireArguments().getInt(fragmentArg1)
 
-       urlImgPizza = requireArguments().getStringArrayList(fragmentArg1) as ArrayList<String>
-       namePizza = requireArguments().getString(fragmentArg2, "")
-       descriptPizza = requireArguments().getString(fragmentArg3, "")
-       costPizza = requireArguments().getInt(fragmentArg4, 0).toString()+"₽"
-        
+        viewModel.searchSpecificPizza(idPizza)
+
     }
 
     companion object {
 
-        val fragmentArg1 = "imgPizza"
-        val fragmentArg2 = "namePizza"
-        val fragmentArg3 = "descriptPizza"
-        val fragmentArg4 = "costPizza"
+        val fragmentArg1 = "idPizza"
 
         fun myNewInstance(
-            imgPizza:ArrayList<String>,
-            namePizza:String,
-            descriptPizza:String,
-            costPizza:Int
+            idPizza:Int
         ):BottomFragment{
             val bottomFragment = BottomFragment()
             val args = Bundle()
-
-            args.putStringArrayList(fragmentArg1, imgPizza)
-            args.putString(fragmentArg2, namePizza)
-            args.putString(fragmentArg3, descriptPizza)
-            args.putInt(fragmentArg4, costPizza)
-
+            args.putInt(fragmentArg1, idPizza)
             bottomFragment.setArguments(args)
+
             return bottomFragment
         }
     }
@@ -79,30 +68,11 @@ class BottomFragment() : BottomSheetDialogFragment() {
 
         dialog?.setOnShowListener { dialog ->
             val d = dialog as BottomSheetDialog
-            val bottomSheet = d.findViewById<View>(com.google.android.material.R.id.design_bottom_sheet) as FrameLayout
+            val bottomSheet =
+                d.findViewById<View>(com.google.android.material.R.id.design_bottom_sheet) as FrameLayout
             val bottomSheetBehavior = BottomSheetBehavior.from(bottomSheet)
             bottomSheetBehavior.state = BottomSheetBehavior.STATE_EXPANDED
         }
-
-        namePosPizzaView = binding.nameRowPizza
-        namePosPizzaView.text = namePizza
-
-        descriptPizzaView = binding.descriptRowPizza
-        descriptPizzaView.text = descriptPizza
-
-        imgPizzaView = binding.previewPizza
-        Glide.with(imgPizzaView)
-            .load(urlImgPizza[0])
-            .centerCrop()
-            .into(imgPizzaView)
-
-        goPizzaCartButton= binding.addCartButton
-
-        //я буду исправлять это недоразумение, но пока у меня не получилось найти информацию, как сделать выравнивание
-        //как в макете
-        goPizzaCartButton.text = "Add to cart                                                          "+costPizza
-
-
 
         return binding.root
     }
@@ -110,33 +80,56 @@ class BottomFragment() : BottomSheetDialogFragment() {
     override fun onStart() {
         super.onStart()
 
-        goPizzaCartButton.setOnClickListener(){
+        viewModel.getSpecificPizza {
+            namePizza = it.name
+            descriptPizza = it.description
+            costPizza = it.price.toString() + "₽"
+            urlImgPizza = it.imageUrls!!
 
-            // ПО НАЖАТИЮ НА ЭТОМУ КНОПКУ ДОЛЖНО ПРОИЗОЙТИ ДОБАВЛЕНИЕ ПИЦЦЫ В КОРИЗНУ, А ТАКЖЕ ДОЛЖЕН ОТКРЫТЬСЯ
-            // ФРАГМЕНТ ГЛАВНОГО МЕНЮ С КНОПКОЙ ВНИЗУ ДЛЯ ПЕРЕХОДА В КОРЗИНУ
+            namePosPizzaView = binding.nameRowPizza
+            namePosPizzaView.text = namePizza
 
-            val fragment = FragmentMainMenu.newInstance(true)
+            descriptPizzaView = binding.descriptRowPizza
+            descriptPizzaView.text = descriptPizza
 
-            this.dismiss()
+            imgPizzaView = binding.previewPizza
+            Glide.with(imgPizzaView)
+                .load(urlImgPizza[0])
+                .centerCrop()
+                .into(imgPizzaView)
 
-            navigator().replaceMainMenu(fragment, true)
+            goPizzaCartButton = binding.addCartButton
 
+            //я буду исправлять это недоразумение, но пока у меня не получилось найти информацию, как сделать выравнивание
+            //как в макете
+            goPizzaCartButton.text =
+                "Add to cart                                                          " + costPizza
+
+            goPizzaCartButton.setOnClickListener() {
+
+                val fragment = FragmentMainMenu.newInstance(true)
+
+                this.dismiss()
+
+                navigator().replaceMainMenu(fragment, true)
+
+            }
+
+            imgPizzaView.setOnClickListener(){
+
+                this.dismiss()
+
+                val fragment = PreviewPizzaFragment.newInstance(urlImgPizza,namePizza, costPizza)
+
+                navigator().showNewScreen(fragment)
+
+            }
         }
+    }
 
-
-
-        imgPizzaView.setOnClickListener(){
-
-            this.dismiss()
-
-            val fragment = PreviewPizzaFragment.newInstance(urlImgPizza,namePizza, costPizza)
-
-            navigator().showNewScreen(fragment)
-
-        }
-
-
-
+    override fun onDestroy() {
+        viewModel.clearComposite()
+        super.onDestroy()
     }
 
 

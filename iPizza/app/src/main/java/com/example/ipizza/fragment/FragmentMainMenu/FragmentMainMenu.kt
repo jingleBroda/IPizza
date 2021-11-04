@@ -45,6 +45,9 @@ class FragmentMainMenu() : Fragment(), TextView.OnEditorActionListener{
     private lateinit var viewModel:FragmentMainMenuViewModel
 
 
+
+
+
     private var cartNoNull:Boolean = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -111,31 +114,20 @@ class FragmentMainMenu() : Fragment(), TextView.OnEditorActionListener{
         adapter = AdapterHomeMenuRecyclerView(tmpList,requireContext())
 
         adapter.setOnItemClickListener{ listItem ->
-            val bottomFragment: BottomFragment? =
-                listItem.imageUrls?.let { imageUrlPizza ->
-                    listItem.name?.let { namePizza ->
-                        listItem.description?.let { descriptionPizza ->
-                            listItem.price?.let { pricePizza ->
-                                BottomFragment.myNewInstance(
-                                    imageUrlPizza,
-                                    namePizza,
-                                    descriptionPizza,
-                                    pricePizza
-                                )
-                            }
-                        }
-                    }
-                }
+            val  bottomFragment: BottomFragment =BottomFragment.myNewInstance(listItem.id)
 
-
-            bottomFragment?.show(requireActivity().supportFragmentManager, "tag")
+            bottomFragment.show(requireActivity().supportFragmentManager, "tag")
         }
 
-        viewModel.getPizza {
+
+
+        viewModel.insertDataRoom()
+
+        viewModel.getAllPizza {
             tmpList = it
             adapter.update(tmpList)
-
         }
+
 
         viewModel.makeApiCallPizza()
 
