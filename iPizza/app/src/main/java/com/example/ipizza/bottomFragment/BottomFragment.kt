@@ -40,8 +40,6 @@ class BottomFragment() : BottomSheetDialogFragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
-        //viewModel = ViewModelProvider(requireActivity()).get(FragmentMainMenuViewModel::class.java)
         viewModel = ViewModelProvider(this).get(FragmentMainMenuViewModel::class.java)
 
         idPizza = requireArguments().getInt(fragmentArg1)
@@ -76,7 +74,16 @@ class BottomFragment() : BottomSheetDialogFragment() {
             bottomSheetBehavior.state = BottomSheetBehavior.STATE_EXPANDED
         }
 
+        initUI()
+
         return binding.root
+    }
+
+    fun initUI(){
+        namePosPizzaView = binding.nameRowPizza
+        descriptPizzaView = binding.descriptRowPizza
+        imgPizzaView = binding.previewPizza
+        goPizzaCartButton = binding.addCartButton
     }
 
     override fun onStart() {
@@ -88,20 +95,14 @@ class BottomFragment() : BottomSheetDialogFragment() {
             costPizza = it.price.toString()
             urlImgPizza = it.imageUrls!!
 
-
-            namePosPizzaView = binding.nameRowPizza
             namePosPizzaView.text = namePizza
 
-            descriptPizzaView = binding.descriptRowPizza
             descriptPizzaView.text = descriptPizza
 
-            imgPizzaView = binding.previewPizza
             Glide.with(imgPizzaView)
                 .load(urlImgPizza[0])
                 .centerCrop()
                 .into(imgPizzaView)
-
-            goPizzaCartButton = binding.addCartButton
 
             //я буду исправлять это недоразумение, но пока у меня не получилось найти информацию, как сделать выравнивание
             //как в макете
@@ -117,7 +118,6 @@ class BottomFragment() : BottomSheetDialogFragment() {
                 tmpOrder.name = namePizza
                 viewModel.insertOrderDataRoom(tmpOrder)
 
-
                 val fragment = FragmentMainMenu.newInstance(true)
 
                 this.dismiss()
@@ -127,13 +127,9 @@ class BottomFragment() : BottomSheetDialogFragment() {
             }
 
             imgPizzaView.setOnClickListener(){
-
                 this.dismiss()
-
                 val fragment = PreviewPizzaFragment.newInstance(urlImgPizza,namePizza, costPizza)
-
                 navigator().showNewScreen(fragment)
-
             }
         }
     }

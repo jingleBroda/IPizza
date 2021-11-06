@@ -42,7 +42,6 @@ class CartFragment : Fragment() {
 
         val root = inflater.inflate(R.layout.fragment_cart, container, false)
         val binding:FragmentCartBinding = FragmentCartBinding.bind(root)
-        //viewModel = ViewModelProvider(requireActivity()).get(FragmentMainMenuViewModel::class.java)
         viewModel = ViewModelProvider(this).get(FragmentMainMenuViewModel::class.java)
 
         placeOrderButton = binding.placeOrderButton

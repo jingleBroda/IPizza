@@ -79,7 +79,6 @@ companion object {
     ): View? {
         val root = inflater.inflate(R.layout.fragment_preview_pizza, container, false)
         val binding:FragmentPreviewPizzaBinding = FragmentPreviewPizzaBinding.bind(root)
-        //viewModel = ViewModelProvider(requireActivity()).get(FragmentMainMenuViewModel::class.java)
         viewModel = ViewModelProvider(this).get(FragmentMainMenuViewModel::class.java)
 
         nameDetailsTextView = binding.namePizzaDetailsTextView

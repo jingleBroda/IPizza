@@ -80,11 +80,10 @@ class FragmentMainMenu() : Fragment(), TextView.OnEditorActionListener{
     }
 
     fun initUI(){
-        //viewModel = ViewModelProvider(requireActivity()).get(FragmentMainMenuViewModel::class.java)
         viewModel = ViewModelProvider(this).get(FragmentMainMenuViewModel::class.java)
         binding = FragmentMainMenuBinding.bind(root)
 
-        //проверка на наличие товаров в корзине, если они есть, то показываем экран с кнопкой перехода.
+        //проверка на наличие товаров в корзине
         if(cartNoNull) {
 
             layoutButtonCart = binding.layoutButtonCart
@@ -105,8 +104,6 @@ class FragmentMainMenu() : Fragment(), TextView.OnEditorActionListener{
             }
 
         }
-
-
 
         searchButton = binding.searchButton
 
@@ -134,10 +131,7 @@ class FragmentMainMenu() : Fragment(), TextView.OnEditorActionListener{
             adapter.update(tmpList)
         }
 
-
         viewModel.makeApiCallPizza()
-
-        //viewModel.getOrderDataRoom()
 
         mainRecView.adapter =  adapter
 
@@ -216,7 +210,6 @@ class FragmentMainMenu() : Fragment(), TextView.OnEditorActionListener{
     }
 
     //обработка нажатия клавиши done на клавиатуре
-    //в данный момент используется чтобы убрать фокус с edittext
     override fun onEditorAction(p0: TextView?, actionId: Int, event: KeyEvent?): Boolean {
         val handled = false
         if (actionId == EditorInfo.IME_ACTION_DONE) {

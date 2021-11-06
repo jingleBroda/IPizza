@@ -11,6 +11,6 @@ data class PizzaModel (
     var name:String = "",
     var price:Int = 0,
     @TypeConverters(ImgUrlConverter::class)
-    var imageUrls:ArrayList<String>? = null, //??????
+    var imageUrls:ArrayList<String>? = null,
     var description:String=""
 )
