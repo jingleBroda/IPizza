@@ -31,12 +31,12 @@ import com.example.ipizza.retrofit.PizzaModel
 
 class FragmentMainMenu() : Fragment(), TextView.OnEditorActionListener{
 
-    private var tmpList:List<PizzaModel> = ArrayList()
 
+    private var tmpList:List<PizzaModel> = ArrayList()
     private lateinit var binding:FragmentMainMenuBinding
+    private lateinit var adapter:AdapterHomeMenuRecyclerView
 
     private lateinit var mainRecView:RecyclerView
-    private lateinit var adapter:AdapterHomeMenuRecyclerView
     private lateinit var searchButton:Button
     private lateinit var searchTextPizza:EditText
     private lateinit var textMenu:TextView
@@ -44,6 +44,7 @@ class FragmentMainMenu() : Fragment(), TextView.OnEditorActionListener{
     private lateinit var layoutButtonCart:LinearLayout
 
     private lateinit var root:View
+
     private lateinit var viewModel:FragmentMainMenuViewModel
 
     private var cartNoNull:Boolean = false
@@ -79,7 +80,8 @@ class FragmentMainMenu() : Fragment(), TextView.OnEditorActionListener{
     }
 
     fun initUI(){
-        viewModel = ViewModelProvider(requireActivity()).get(FragmentMainMenuViewModel::class.java)
+        //viewModel = ViewModelProvider(requireActivity()).get(FragmentMainMenuViewModel::class.java)
+        viewModel = ViewModelProvider(this).get(FragmentMainMenuViewModel::class.java)
         binding = FragmentMainMenuBinding.bind(root)
 
         //проверка на наличие товаров в корзине, если они есть, то показываем экран с кнопкой перехода.

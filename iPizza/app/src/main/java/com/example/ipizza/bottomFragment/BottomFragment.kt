@@ -41,7 +41,8 @@ class BottomFragment() : BottomSheetDialogFragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        viewModel = ViewModelProvider(requireActivity()).get(FragmentMainMenuViewModel::class.java)
+        //viewModel = ViewModelProvider(requireActivity()).get(FragmentMainMenuViewModel::class.java)
+        viewModel = ViewModelProvider(this).get(FragmentMainMenuViewModel::class.java)
 
         idPizza = requireArguments().getInt(fragmentArg1)
 

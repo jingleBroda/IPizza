@@ -5,27 +5,41 @@ import android.util.Log
 import androidx.lifecycle.AndroidViewModel
 import com.example.ipizza.App
 import com.example.ipizza.dataBase.CartModel
+import com.example.ipizza.dataBase.PizzaDataBase
 import com.example.ipizza.retrofit.PizzaModel
 import com.example.ipizza.retrofit.RetrofitInstance
 import com.example.ipizza.retrofit.RetrofitServices
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import io.reactivex.rxjava3.disposables.CompositeDisposable
 import io.reactivex.rxjava3.schedulers.Schedulers
+import javax.inject.Inject
 
 
 class FragmentMainMenuViewModel(application:Application):AndroidViewModel(application){ //:ViewModel() {
 
-    private val retroInstance = RetrofitInstance.getRetroPizzaInstance().create(RetrofitServices::class.java)
+    @Inject
+    lateinit var retroInstance:RetrofitServices
+
     private val compositeDisposable = CompositeDisposable()
+
+    init{
+        (application as App).getRetroComponent().inject(this)
+        //(application as App)
+    }
 
 
     //Test Room
+
+    //потенциально нужен inject
     private val db = App.getInstanceApp().getDB()
     private val dbDao = db.databaseDao()
+
     private var onMylistenerInsertRoom: ((item: List<PizzaModel>) -> Unit)? = null
     private var onMylistenerGetAllDataRoom: ((item: List<PizzaModel>) -> Unit)? = null
     private var onMylistenerGetSpecificDataRoom: ((item: PizzaModel) -> Unit)? = null
     private var onMylistenerGetOrderDataRoom: ((item: List<CartModel>) -> Unit)? = null
+
+
     //
 
 
