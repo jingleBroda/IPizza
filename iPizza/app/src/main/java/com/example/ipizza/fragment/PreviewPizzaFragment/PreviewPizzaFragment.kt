@@ -23,22 +23,13 @@ import com.example.ipizza.viewPager.AdapterViewPager
 
 class PreviewPizzaFragment() : Fragment() {
 
-
     private var imgPizza:ArrayList<String> = ArrayList()
     private var namePizza = ""
     private var costPizza = ""
+    private lateinit var binding:FragmentPreviewPizzaBinding
 
-    private lateinit var nameDetailsTextView:TextView
-    private lateinit var numberImg:TextView
-    private lateinit var buttonGoCardDetails:Button
-    private lateinit var backButton:ImageButton
-
-    //потенциально нужен inject
     private lateinit var adapterVP: AdapterViewPager
 
-    private lateinit var customeViewPager:ViewPager2
-
-    //потенциально нужен inject
     private lateinit var viewModel: FragmentMainMenuViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -78,45 +69,29 @@ companion object {
         savedInstanceState: Bundle?
     ): View? {
         val root = inflater.inflate(R.layout.fragment_preview_pizza, container, false)
-        val binding:FragmentPreviewPizzaBinding = FragmentPreviewPizzaBinding.bind(root)
+        binding = FragmentPreviewPizzaBinding.bind(root)
         viewModel = ViewModelProvider(this).get(FragmentMainMenuViewModel::class.java)
 
-        nameDetailsTextView = binding.namePizzaDetailsTextView
-        nameDetailsTextView.text = namePizza
-
-        numberImg = binding.numberImg
-
-        customeViewPager = binding.pager
+        binding.namePizzaDetailsTextView.text = namePizza
 
         adapterVP = AdapterViewPager(imgPizza)
 
+        binding.pager.adapter = adapterVP
 
-        customeViewPager.adapter = adapterVP
-
-        customeViewPager.registerOnPageChangeCallback(object :ViewPager2.OnPageChangeCallback(){
+        binding.pager.registerOnPageChangeCallback(object :ViewPager2.OnPageChangeCallback(){
             override fun onPageScrolled(
                 position: Int,
                 positionOffset: Float,
                 positionOffsetPixels: Int
             ) {
                 super.onPageScrolled(position, positionOffset, positionOffsetPixels)
-                numberImg.text = (position+1).toString()+"/"+adapterVP.itemCount.toString()
+                binding.numberImg.text = (position+1).toString()+"/"+adapterVP.itemCount.toString()
             }
         })
 
-
         //я буду исправлять это недоразумение, но пока у меня не получилось найти информацию, как сделать выравнивание
         //как в макете
-        buttonGoCardDetails = binding.goCartDetailsTextView
-        buttonGoCardDetails.text = "Add to cart                                   "+costPizza
-
-
-
-
-
-
-        backButton = binding.backButton
-
+        binding.goCartDetailsTextView.text = "Add to cart                                   "+costPizza
 
         return root
     }
@@ -124,12 +99,12 @@ companion object {
     override fun onStart() {
         super.onStart()
 
-        backButton.setOnClickListener(){
+        binding.backButton.setOnClickListener(){
             navigator().goBack()
 
         }
 
-        buttonGoCardDetails.setOnClickListener(){
+        binding.goCartDetailsTextView.setOnClickListener(){
             val tmpOrder = CartModel()
             tmpOrder.imgUrl = imgPizza[0]
             tmpOrder.price = costPizza.toInt()

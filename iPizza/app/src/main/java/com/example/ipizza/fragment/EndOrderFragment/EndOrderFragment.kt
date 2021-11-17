@@ -17,17 +17,17 @@ class EndOrderFragment : Fragment() {
     lateinit var root:View
     lateinit var backButton:Button
 
+    lateinit var binding:FragmentEndOrderBinding
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
 
         root = inflater.inflate(R.layout.fragment_end_order, container, false)
-        val binding:FragmentEndOrderBinding = FragmentEndOrderBinding.bind(root)
+        binding = FragmentEndOrderBinding.bind(root)
 
-        backButton = binding.backMenuButton
-
-        backButton.setOnClickListener(){
+        binding.backMenuButton.setOnClickListener(){
             navigator().goBack()
         }
 

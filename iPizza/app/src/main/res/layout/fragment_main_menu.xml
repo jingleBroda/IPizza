@@ -51,12 +51,12 @@
         app:layout_constraintBottom_toBottomOf="@+id/searchButton"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="@+id/assortiPizza"
+        app:layout_constraintStart_toStartOf="@+id/assortiPizzaRecView"
         app:layout_constraintTop_toTopOf="@+id/searchButton"
         app:layout_constraintVertical_bias="0.0" />
 
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/assortiPizza"
+        android:id="@+id/assortiPizzaRecView"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:layout_marginStart="25dp"
@@ -90,9 +90,9 @@
         android:textColorHint="#7E7E7E"
         android:textSize="16sp"
         android:visibility="gone"
-        app:layout_constraintBottom_toTopOf="@+id/assortiPizza"
-        app:layout_constraintEnd_toEndOf="@+id/assortiPizza"
-        app:layout_constraintStart_toStartOf="@+id/assortiPizza"
+        app:layout_constraintBottom_toTopOf="@+id/assortiPizzaRecView"
+        app:layout_constraintEnd_toEndOf="@+id/assortiPizzaRecView"
+        app:layout_constraintStart_toStartOf="@+id/assortiPizzaRecView"
         app:layout_constraintTop_toTopOf="parent" />
 
 
@@ -103,7 +103,7 @@
         android:background="@drawable/search2"
         android:visibility="visible"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="@+id/assortiPizza"
+        app:layout_constraintEnd_toEndOf="@+id/assortiPizzaRecView"
         app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"

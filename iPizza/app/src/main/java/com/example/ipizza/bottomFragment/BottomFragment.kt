@@ -21,7 +21,6 @@ import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 
 class BottomFragment() : BottomSheetDialogFragment() {
 
-
     private lateinit var binding: BottomSheetLayoutBinding
     private lateinit var viewModel: FragmentMainMenuViewModel
 
@@ -30,11 +29,6 @@ class BottomFragment() : BottomSheetDialogFragment() {
     private var descriptPizza:String = ""
     private var costPizza:String = ""
     private var idPizza:Int = 0
-
-    private lateinit var namePosPizzaView:TextView
-    private lateinit var descriptPizzaView:TextView
-    private lateinit var imgPizzaView:ImageView
-    private lateinit var goPizzaCartButton:Button
 
     override fun getTheme() = R.style.AppBottomSheetDialogTheme
 
@@ -74,16 +68,7 @@ class BottomFragment() : BottomSheetDialogFragment() {
             bottomSheetBehavior.state = BottomSheetBehavior.STATE_EXPANDED
         }
 
-        initUI()
-
         return binding.root
-    }
-
-    fun initUI(){
-        namePosPizzaView = binding.nameRowPizza
-        descriptPizzaView = binding.descriptRowPizza
-        imgPizzaView = binding.previewPizza
-        goPizzaCartButton = binding.addCartButton
     }
 
     override fun onStart() {
@@ -95,21 +80,22 @@ class BottomFragment() : BottomSheetDialogFragment() {
             costPizza = it.price.toString()
             urlImgPizza = it.imageUrls!!
 
-            namePosPizzaView.text = namePizza
+            binding.nameRowPizza.text = namePizza
 
-            descriptPizzaView.text = descriptPizza
+            binding.descriptRowPizza.text = descriptPizza
 
-            Glide.with(imgPizzaView)
+            Glide.with(binding.previewPizza)
                 .load(urlImgPizza[0])
                 .centerCrop()
-                .into(imgPizzaView)
+                .into(binding.previewPizza)
 
             //я буду исправлять это недоразумение, но пока у меня не получилось найти информацию, как сделать выравнивание
             //как в макете
-            goPizzaCartButton.text =
+            binding.addCartButton.text =
                 "Add to cart                                                          " + costPizza+ "₽"
 
-            goPizzaCartButton.setOnClickListener() {
+            //goPizzaCartButton
+            binding.addCartButton.setOnClickListener() {
 
                 val tmpOrder = CartModel()
                 tmpOrder.imgUrl = urlImgPizza[0]
@@ -126,7 +112,7 @@ class BottomFragment() : BottomSheetDialogFragment() {
 
             }
 
-            imgPizzaView.setOnClickListener(){
+            binding.previewPizza.setOnClickListener(){
                 this.dismiss()
                 val fragment = PreviewPizzaFragment.newInstance(urlImgPizza,namePizza, costPizza)
                 navigator().showNewScreen(fragment)

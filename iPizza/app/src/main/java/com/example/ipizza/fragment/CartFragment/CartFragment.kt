@@ -26,14 +26,12 @@ import java.util.ArrayList
 
 class CartFragment : Fragment() {
 
-    lateinit var placeOrderButton: Button
-    private lateinit var cartRecView: RecyclerView
     private lateinit var adapter:AdapterCartFragmentRecyclerView
-    private lateinit var deleteButton:ImageButton
 
     private var orderList:List<CartModel> = ArrayList()
 
     private lateinit var viewModel: FragmentMainMenuViewModel
+    private lateinit var binding:FragmentCartBinding
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -41,21 +39,16 @@ class CartFragment : Fragment() {
     ): View? {
 
         val root = inflater.inflate(R.layout.fragment_cart, container, false)
-        val binding:FragmentCartBinding = FragmentCartBinding.bind(root)
+        binding = FragmentCartBinding.bind(root)
         viewModel = ViewModelProvider(this).get(FragmentMainMenuViewModel::class.java)
 
-        placeOrderButton = binding.placeOrderButton
-        cartRecView = binding.cartRecView
-        cartRecView.hasFixedSize()
-        cartRecView.layoutManager= LinearLayoutManager(activity)
+        binding.cartRecView.hasFixedSize()
+        binding.cartRecView.layoutManager= LinearLayoutManager(activity)
         adapter = AdapterCartFragmentRecyclerView(orderList,requireContext())
 
-        cartRecView.adapter = adapter
-
-        deleteButton = binding.deleteButton
+        binding.cartRecView.adapter = adapter
 
         viewModel.getOrderDataRoom()
-
 
         return root
     }
@@ -77,17 +70,17 @@ class CartFragment : Fragment() {
             adapter.update(orderList)
 
             val costOrder = showCostOrder(it)
-            placeOrderButton.text = "Place order                                                       "+ costOrder.toString()+"₽"
+            binding.placeOrderButton.text = "Place order                                                       "+ costOrder.toString()+"₽"
         }
 
         adapter.setOnVariationOrderCount {
             viewModel.updateOrder(it)
 
             val costOrder = showCostOrder(adapter.getCurrentList())
-            placeOrderButton.text = "Place order                                                       "+ costOrder.toString()+"₽"
+            binding.placeOrderButton.text = "Place order                                                       "+ costOrder.toString()+"₽"
         }
 
-        placeOrderButton.setOnClickListener(){
+        binding.placeOrderButton.setOnClickListener(){
             viewModel.deleteOrder()
 
             //добавления главного меню БЕЗ кнопки перехода в корзину
@@ -98,7 +91,7 @@ class CartFragment : Fragment() {
             navigator().showNewScreen(fragmentEnd)
         }
 
-        deleteButton.setOnClickListener(){
+        binding.deleteButton.setOnClickListener(){
             viewModel.deleteOrder()
             Toast.makeText(requireContext(), "Заказ был удален!", Toast.LENGTH_SHORT).show()
 

@@ -31,17 +31,9 @@ import com.example.ipizza.retrofit.PizzaModel
 
 class FragmentMainMenu() : Fragment(), TextView.OnEditorActionListener{
 
-
     private var tmpList:List<PizzaModel> = ArrayList()
     private lateinit var binding:FragmentMainMenuBinding
     private lateinit var adapter:AdapterHomeMenuRecyclerView
-
-    private lateinit var mainRecView:RecyclerView
-    private lateinit var searchButton:Button
-    private lateinit var searchTextPizza:EditText
-    private lateinit var textMenu:TextView
-    private lateinit var goCartButton:Button
-    private lateinit var layoutButtonCart:LinearLayout
 
     private lateinit var root:View
 
@@ -85,19 +77,15 @@ class FragmentMainMenu() : Fragment(), TextView.OnEditorActionListener{
 
         //проверка на наличие товаров в корзине
         if(cartNoNull) {
-
-            layoutButtonCart = binding.layoutButtonCart
-            layoutButtonCart.visibility = View.VISIBLE
-
-            goCartButton = binding.goToCartinMenu
+            binding.layoutButtonCart.visibility = View.VISIBLE
 
             viewModel.getAllOrder {
                 val costOrder = showCostOrder(it)
-                goCartButton.text =
+                binding.goToCartinMenu.text =
                     "Checkout                                                       " + costOrder.toString() + "₽"
             }
 
-            goCartButton.setOnClickListener(){
+            binding.goToCartinMenu.setOnClickListener(){
                 val fragment = CartFragment()
 
                 navigator().showNewScreen(fragment)
@@ -105,16 +93,8 @@ class FragmentMainMenu() : Fragment(), TextView.OnEditorActionListener{
 
         }
 
-        searchButton = binding.searchButton
-
-        searchTextPizza = binding.searchPizza
-
-        textMenu = binding.menuText
-
-        mainRecView = binding.assortiPizza
-        mainRecView.hasFixedSize()
-        mainRecView.layoutManager= LinearLayoutManager(activity)
-
+        binding.assortiPizzaRecView.hasFixedSize()
+        binding.assortiPizzaRecView.layoutManager= LinearLayoutManager(activity)
 
         adapter = AdapterHomeMenuRecyclerView(tmpList,requireContext())
 
@@ -133,7 +113,7 @@ class FragmentMainMenu() : Fragment(), TextView.OnEditorActionListener{
 
         viewModel.makeApiCallPizza()
 
-        mainRecView.adapter =  adapter
+        binding.assortiPizzaRecView.adapter =  adapter
 
     }
 
@@ -155,31 +135,30 @@ class FragmentMainMenu() : Fragment(), TextView.OnEditorActionListener{
     override fun onStart() {
         super.onStart()
 
-
         if(cartNoNull) {
             viewModel.getAllOrder {
                 val costOrder = showCostOrder(it)
-                goCartButton.text =
+                binding.goToCartinMenu.text =
                     "Checkout                                                                     " + costOrder.toString() + "₽"
             }
         }
 
-        searchButton.setOnClickListener(){
+        binding.searchButton.setOnClickListener(){
             //скрытие кнопки и надписи
-            textMenu.isVisible = false
-            searchButton.isVisible = false
+            binding.menuText.isVisible = false
+            binding.searchButton.isVisible = false
 
-            searchTextPizza.isVisible = true
-            searchTextPizza.requestFocus()
-            searchTextPizza.setOnEditorActionListener(this)
+            binding.searchPizza.isVisible = true
+            binding.searchPizza.requestFocus()
+            binding.searchPizza.setOnEditorActionListener(this)
 
-            searchTextPizza.addTextChangedListener(object : TextWatcher {
+            binding.searchPizza.addTextChangedListener(object : TextWatcher {
                 override fun afterTextChanged(s: Editable) {
 
                     val newPizzaList:MutableList<PizzaModel> = arrayListOf()
                     var j=0
                     for(i in tmpList) {
-                        if (searchTextPizza.text in i.name){
+                        if (binding.searchPizza.text in i.name){
                             newPizzaList.add(j, i)
                             j++
                         }
@@ -214,7 +193,7 @@ class FragmentMainMenu() : Fragment(), TextView.OnEditorActionListener{
         val handled = false
         if (actionId == EditorInfo.IME_ACTION_DONE) {
             if (p0?.id == R.id.searchPizza) {
-                searchTextPizza.clearFocus()
+                binding.searchPizza.clearFocus()
                 return handled
             }
         }
