@@ -1,20 +1,25 @@
 package com.example.ipizza.data.repositoriesImpl
 
-import android.util.Log
+
+import android.app.Application
 import com.example.ipizza.data.dataBase.PizzaDao
-import com.example.ipizza.data.dataBase.PizzaDataBase
 import com.example.ipizza.domain.model.PizzaModel
 import com.example.ipizza.data.retrofit.RetrofitServices
 import com.example.ipizza.domain.model.CartModel
 import com.example.ipizza.domain.repositories.DomainRepository
+import com.example.ipizza.presentation.App
 import io.reactivex.rxjava3.core.Completable
 import io.reactivex.rxjava3.core.Single
-import io.reactivex.rxjava3.disposables.CompositeDisposable
+import javax.inject.Inject
 
-class PizzaRepositoriesImpl(
-    private val retroInstance: RetrofitServices,
-    private val dbDao: PizzaDao
+class PizzaRepositoriesImpl @Inject constructor(
+    insideRetroInstance: RetrofitServices,
+    insidedbDao: PizzaDao
     ) : DomainRepository {
+
+    val retroInstance = insideRetroInstance
+    val dbDao = insidedbDao
+
 
     //1
     override fun makeApiPizza(): Single<List<PizzaModel>> {

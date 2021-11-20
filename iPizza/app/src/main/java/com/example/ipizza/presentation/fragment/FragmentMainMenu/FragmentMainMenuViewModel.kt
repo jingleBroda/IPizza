@@ -1,7 +1,6 @@
 package com.example.ipizza.presentation.fragment.FragmentMainMenu
 
 import android.app.Application
-import android.util.Log
 import androidx.lifecycle.AndroidViewModel
 import com.example.ipizza.presentation.App
 import com.example.ipizza.domain.model.CartModel
@@ -12,56 +11,43 @@ import com.example.ipizza.domain.model.PizzaModel
 import com.example.ipizza.data.retrofit.RetrofitServices
 import com.example.ipizza.domain.repositories.DomainRepository
 import com.example.ipizza.domain.usecase.GetPizzaToPizzaMenuUseCase
-import com.example.ipizza.domain.usecase.ProcessingCartPizza
+import com.example.ipizza.domain.usecase.ProcessingCartPizzaUseCase
 import com.example.ipizza.domain.usecase.ProcessingSpecificPizzaUseCase
-import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import io.reactivex.rxjava3.disposables.CompositeDisposable
-import io.reactivex.rxjava3.schedulers.Schedulers
 import javax.inject.Inject
 
 
 class FragmentMainMenuViewModel(application:Application):AndroidViewModel(application){ //:ViewModel() {
 
-    @Inject
-    lateinit var retroInstance:RetrofitServices
-
-    @Inject
-    lateinit var db:PizzaDataBase
-
-    @Inject
-    lateinit var dbDao:PizzaDao
-
     private val compositeDisposable = CompositeDisposable()
 
-    //ТЕСТ НОВОЙ АРХИТЕКТУРЫ
-    private var pizzaRepos:DomainRepository
+    @Inject
+    lateinit var pizzaRepos:DomainRepository
 
     private var useCaseFragmentMainMenu: GetPizzaToPizzaMenuUseCase
 
     private var useCaseOperationInSpecificPizza: ProcessingSpecificPizzaUseCase
 
-    private var useCaseCartPizza: ProcessingCartPizza
-    //
+    private var useCaseCartPizzaUseCase: ProcessingCartPizzaUseCase
+
 
 
 
     init{
         daggerInject(application)
 
-        pizzaRepos = PizzaRepositoriesImpl(retroInstance, dbDao)
-
         useCaseFragmentMainMenu = GetPizzaToPizzaMenuUseCase(pizzaRepos, compositeDisposable)
         useCaseOperationInSpecificPizza = ProcessingSpecificPizzaUseCase(pizzaRepos, compositeDisposable)
-        useCaseCartPizza = ProcessingCartPizza(pizzaRepos, compositeDisposable)
+        useCaseCartPizzaUseCase = ProcessingCartPizzaUseCase(pizzaRepos, compositeDisposable)
 
     }
 
     private var onMylistenerInsertRoom: ((item: List<PizzaModel>) -> Unit)? = null
     private var onMylistenerGetAllDataRoom: ((item: List<PizzaModel>) -> Unit)? = null
-    private var onMylistenerGetSpecificOrderPizza: ((item: CartModel) -> Unit)? = null
 
     private fun daggerInject(application:Application){
         (application as App).getRetroComponent().inject(this)
+
     }
 
     fun makeApiCallPizza(){
@@ -70,13 +56,13 @@ class FragmentMainMenuViewModel(application:Application):AndroidViewModel(applic
 
 
     fun updateOrder(order: CartModel){
-        useCaseCartPizza.updateOrder(order)
+        useCaseCartPizzaUseCase.updateOrder(order)
     }
 
 
 
     fun deleteOrder(){
-        useCaseCartPizza.deleteOrder()
+        useCaseCartPizzaUseCase.deleteOrder()
     }
 
     fun insertOrderDataRoom(order: CartModel) {
@@ -84,11 +70,11 @@ class FragmentMainMenuViewModel(application:Application):AndroidViewModel(applic
     }
 
     fun getOrderDataRoom(){
-        useCaseCartPizza.getOrderDataRoom()
+        useCaseCartPizzaUseCase.getOrderDataRoom()
     }
 
     fun getAllOrder(allOrder: (item: List<CartModel>) -> Unit){
-        useCaseCartPizza.getAllOrder(allOrder)
+        useCaseCartPizzaUseCase.getAllOrder(allOrder)
     }
 
      fun searchSpecificPizza(id:Int){

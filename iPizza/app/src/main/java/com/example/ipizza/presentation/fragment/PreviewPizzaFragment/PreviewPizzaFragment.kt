@@ -33,31 +33,21 @@ class PreviewPizzaFragment() : Fragment() {
         super.onCreate(savedInstanceState)
         viewModel = ViewModelProvider(this).get(FragmentMainMenuViewModel::class.java)
         pizzaId = requireArguments().getInt(fragmentArg1, 0)
-        //imgPizza = requireArguments().getStringArrayList(fragmentArg1) as ArrayList<String>
-        //namePizza = requireArguments().getString(fragmentArg2, "")
-        //costPizza = requireArguments().getString(fragmentArg3, "")
         viewModel.searchSpecificPizza(pizzaId)
     }
 
 companion object {
 
     val fragmentArg1 = "idPizza"
-    //val fragmentArg1 = "imgPizza"
-    //val fragmentArg2 = "namePizza"
-    //val fragmentArg3 = "costPizza"
+
 
      fun newInstance(
-         //urlImgPizza: ArrayList<String>,
-         //namePizza: String,
-         //costPizza: String
+
         id:Int
     ): PreviewPizzaFragment {
         val detailPizzaFragment = PreviewPizzaFragment()
         val args = Bundle()
          args.putInt(fragmentArg1, id)
-        //args.putStringArrayList(fragmentArg1, urlImgPizza)
-        //args.putString(fragmentArg2, namePizza)
-        //args.putString(fragmentArg3, costPizza)
 
         detailPizzaFragment.arguments = args
 

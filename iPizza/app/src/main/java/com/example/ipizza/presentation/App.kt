@@ -1,10 +1,7 @@
 package com.example.ipizza.presentation
 
 import android.app.Application
-import com.example.ipizza.presentation.dagger2.DaggerRetroComponent
-import com.example.ipizza.presentation.dagger2.RetroComponent
-import com.example.ipizza.presentation.dagger2.RetroModule
-import com.example.ipizza.presentation.dagger2.RoomDataModule
+import com.example.ipizza.presentation.dagger2.*
 
 class App: Application() {
 
@@ -21,6 +18,7 @@ class App: Application() {
         retroComponent = DaggerRetroComponent.builder()
             .retroModule(RetroModule())
             .roomDataModule(RoomDataModule(this))
+            .reposModule(ReposModule())
             .build()
 
         instance = this
