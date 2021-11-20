@@ -12,8 +12,8 @@ import io.reactivex.rxjava3.schedulers.Schedulers
 import javax.inject.Inject
 
 class ProcessingSpecificPizzaUseCase  constructor(
-     val domainRepos: DomainRepository,
-     val compositeDisposable : CompositeDisposable
+    private val domainRepos: DomainRepository,
+    private val compositeDisposable : CompositeDisposable
 ) {
 
     private var onMylistenerGetSpecificDataRoom: ((item: PizzaModel) -> Unit)? = null

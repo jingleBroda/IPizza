@@ -9,6 +9,7 @@ import com.example.ipizza.data.dataBase.PizzaDataBase
 import com.example.ipizza.data.repositoriesImpl.PizzaRepositoriesImpl
 import com.example.ipizza.domain.model.PizzaModel
 import com.example.ipizza.data.retrofit.RetrofitServices
+import com.example.ipizza.domain.model.ServerCartModel
 import com.example.ipizza.domain.repositories.DomainRepository
 import com.example.ipizza.domain.usecase.GetPizzaToPizzaMenuUseCase
 import com.example.ipizza.domain.usecase.ProcessingCartPizzaUseCase
@@ -52,6 +53,10 @@ class FragmentMainMenuViewModel(application:Application):AndroidViewModel(applic
 
     fun makeApiCallPizza(){
         useCaseFragmentMainMenu.makeApi(onMylistenerInsertRoom)
+    }
+
+    fun postOrderPizzaListServer(orderList:List<ServerCartModel>){
+        useCaseCartPizzaUseCase.postInServerListPizza(orderList)
     }
 
 

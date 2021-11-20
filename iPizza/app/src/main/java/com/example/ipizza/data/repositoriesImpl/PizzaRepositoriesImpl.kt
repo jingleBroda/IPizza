@@ -6,6 +6,7 @@ import com.example.ipizza.data.dataBase.PizzaDao
 import com.example.ipizza.domain.model.PizzaModel
 import com.example.ipizza.data.retrofit.RetrofitServices
 import com.example.ipizza.domain.model.CartModel
+import com.example.ipizza.domain.model.ServerCartModel
 import com.example.ipizza.domain.repositories.DomainRepository
 import com.example.ipizza.presentation.App
 import io.reactivex.rxjava3.core.Completable
@@ -38,7 +39,6 @@ class PizzaRepositoriesImpl @Inject constructor(
     }
     //
     //2
-    //?????????????????
     override fun searchSpecificPizza(id: Int): Single<PizzaModel> {
         return dbDao.getSpecificPizza(id)
     }
@@ -62,6 +62,10 @@ class PizzaRepositoriesImpl @Inject constructor(
 
     override fun getOrderDataRoom(): Single<List<CartModel>> {
         return dbDao.getOrder()
+    }
+
+    override fun postPizzaInServer(orderList:List<ServerCartModel>): Completable {
+        return retroInstance.postPizzaOrder(orderList)
     }
     //
 

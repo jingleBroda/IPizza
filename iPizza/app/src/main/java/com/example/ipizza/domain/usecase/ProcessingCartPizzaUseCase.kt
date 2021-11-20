@@ -3,6 +3,7 @@ package com.example.ipizza.domain.usecase
 import android.app.Application
 import android.util.Log
 import com.example.ipizza.domain.model.CartModel
+import com.example.ipizza.domain.model.ServerCartModel
 import com.example.ipizza.domain.repositories.DomainRepository
 import com.example.ipizza.presentation.App
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
@@ -11,8 +12,8 @@ import io.reactivex.rxjava3.schedulers.Schedulers
 import javax.inject.Inject
 
 class ProcessingCartPizzaUseCase constructor(
-     val domainRepos: DomainRepository,
-     val compositeDisposable : CompositeDisposable
+    private val domainRepos: DomainRepository,
+    private val compositeDisposable : CompositeDisposable
 ) {
     private var onMylistenerGetOrderDataRoom: ((item: List<CartModel>) -> Unit)? = null
 
@@ -59,6 +60,17 @@ class ProcessingCartPizzaUseCase constructor(
 
     fun getAllOrder(allOrder: (item: List<CartModel>) -> Unit){
         onMylistenerGetOrderDataRoom = allOrder
+    }
+
+    fun postInServerListPizza(orderList:List<ServerCartModel>){
+        val zaprosPostInServer = domainRepos.postPizzaInServer(orderList)
+            .subscribeOn(Schedulers.single())
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe()
+
+        compositeDisposable.add(
+            zaprosPostInServer
+        )
     }
 
 }

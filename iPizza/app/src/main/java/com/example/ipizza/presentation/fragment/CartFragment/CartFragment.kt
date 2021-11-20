@@ -12,6 +12,7 @@ import com.example.ipizza.R
 import com.example.ipizza.presentation.contract.navigator
 import com.example.ipizza.domain.model.CartModel
 import com.example.ipizza.databinding.FragmentCartBinding
+import com.example.ipizza.domain.model.ServerCartModel
 import com.example.ipizza.presentation.fragment.EndOrderFragment.EndOrderFragment
 import com.example.ipizza.presentation.fragment.FragmentMainMenu.FragmentMainMenu
 import com.example.ipizza.presentation.fragment.FragmentMainMenu.FragmentMainMenuViewModel
@@ -76,6 +77,17 @@ class CartFragment : Fragment() {
         }
 
         binding.placeOrderButton.setOnClickListener(){
+
+
+            val serverListOrder:MutableList<ServerCartModel> = ArrayList()
+
+            for(i in 0 until adapter.itemCount){
+                val tmpServerIteam:ServerCartModel = ServerCartModel(i, orderList[i].quantity)
+                serverListOrder.add(i, tmpServerIteam)
+            }
+
+            viewModel.postOrderPizzaListServer(serverListOrder)
+
             viewModel.deleteOrder()
 
             //добавления главного меню БЕЗ кнопки перехода в корзину
