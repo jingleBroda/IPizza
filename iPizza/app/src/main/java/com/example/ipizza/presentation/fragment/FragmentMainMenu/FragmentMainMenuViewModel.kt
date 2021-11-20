@@ -4,11 +4,16 @@ import android.app.Application
 import android.util.Log
 import androidx.lifecycle.AndroidViewModel
 import com.example.ipizza.presentation.App
-import com.example.ipizza.data.dataBase.CartModel
+import com.example.ipizza.domain.model.CartModel
 import com.example.ipizza.data.dataBase.PizzaDao
 import com.example.ipizza.data.dataBase.PizzaDataBase
-import com.example.ipizza.data.retrofit.PizzaModel
+import com.example.ipizza.data.repositoriesImpl.PizzaRepositoriesImpl
+import com.example.ipizza.domain.model.PizzaModel
 import com.example.ipizza.data.retrofit.RetrofitServices
+import com.example.ipizza.domain.repositories.DomainRepository
+import com.example.ipizza.domain.usecase.GetPizzaToPizzaMenuUseCase
+import com.example.ipizza.domain.usecase.ProcessingCartPizza
+import com.example.ipizza.domain.usecase.ProcessingSpecificPizzaUseCase
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import io.reactivex.rxjava3.disposables.CompositeDisposable
 import io.reactivex.rxjava3.schedulers.Schedulers
@@ -28,14 +33,31 @@ class FragmentMainMenuViewModel(application:Application):AndroidViewModel(applic
 
     private val compositeDisposable = CompositeDisposable()
 
+    //ТЕСТ НОВОЙ АРХИТЕКТУРЫ
+    private var pizzaRepos:DomainRepository
+
+    private var useCaseFragmentMainMenu: GetPizzaToPizzaMenuUseCase
+
+    private var useCaseOperationInSpecificPizza: ProcessingSpecificPizzaUseCase
+
+    private var useCaseCartPizza: ProcessingCartPizza
+    //
+
+
+
     init{
         daggerInject(application)
+
+        pizzaRepos = PizzaRepositoriesImpl(retroInstance, dbDao)
+
+        useCaseFragmentMainMenu = GetPizzaToPizzaMenuUseCase(pizzaRepos, compositeDisposable)
+        useCaseOperationInSpecificPizza = ProcessingSpecificPizzaUseCase(pizzaRepos, compositeDisposable)
+        useCaseCartPizza = ProcessingCartPizza(pizzaRepos, compositeDisposable)
+
     }
 
     private var onMylistenerInsertRoom: ((item: List<PizzaModel>) -> Unit)? = null
     private var onMylistenerGetAllDataRoom: ((item: List<PizzaModel>) -> Unit)? = null
-    private var onMylistenerGetSpecificDataRoom: ((item: PizzaModel) -> Unit)? = null
-    private var onMylistenerGetOrderDataRoom: ((item: List<CartModel>) -> Unit)? = null
     private var onMylistenerGetSpecificOrderPizza: ((item: CartModel) -> Unit)? = null
 
     private fun daggerInject(application:Application){
@@ -43,161 +65,62 @@ class FragmentMainMenuViewModel(application:Application):AndroidViewModel(applic
     }
 
     fun makeApiCallPizza(){
-
-        val localDisposable =  retroInstance.getPizzaFullInfo()
-            .subscribeOn(Schedulers.single())
-            .observeOn(AndroidSchedulers.mainThread())
-            .subscribe({pizza->
-                onMylistenerInsertRoom?.invoke(pizza)
-                },
-                {
-                        Log.d("Error", it.localizedMessage)
-                })
-
-
-        compositeDisposable.add(
-            localDisposable
-        )
-
+        useCaseFragmentMainMenu.makeApi(onMylistenerInsertRoom)
     }
 
 
     fun updateOrder(order: CartModel){
-        val zaprosUpdate = dbDao.updateOrder(order)
-            .subscribeOn(Schedulers.single())
-            .observeOn(AndroidSchedulers.mainThread())
-            .subscribe()
-
-        compositeDisposable.add(
-            zaprosUpdate
-        )
+        useCaseCartPizza.updateOrder(order)
     }
 
 
 
     fun deleteOrder(){
-        val zaprosDelete = dbDao.deleteOrder()
-            .subscribeOn(Schedulers.single())
-            .observeOn(AndroidSchedulers.mainThread())
-            .subscribe()
-
-        compositeDisposable.add(
-            zaprosDelete
-        )
+        useCaseCartPizza.deleteOrder()
     }
 
-    fun insertOrderDataRoom(order:CartModel) {
-        val zaprosInsert = dbDao.insertOrderPizza(order)
-            .subscribeOn(Schedulers.single())
-            .observeOn(AndroidSchedulers.mainThread())
-            .subscribe()
-
-        compositeDisposable.add(
-            zaprosInsert
-        )
+    fun insertOrderDataRoom(order: CartModel) {
+        useCaseOperationInSpecificPizza.insertOrderDataRoom(order)
     }
 
     fun getOrderDataRoom(){
-        val zaprosAllOrder = dbDao.getOrder()
-            .subscribeOn(Schedulers.single())
-            .observeOn(AndroidSchedulers.mainThread())
-            .subscribe(
-                {
-                    onMylistenerGetOrderDataRoom?.invoke(it)
-                },
-                {
-                    Log.d("Error", it.localizedMessage)
-                }
-            )
-        compositeDisposable.add(
-            zaprosAllOrder
-        )
+        useCaseCartPizza.getOrderDataRoom()
     }
 
     fun getAllOrder(allOrder: (item: List<CartModel>) -> Unit){
-        onMylistenerGetOrderDataRoom = allOrder
+        useCaseCartPizza.getAllOrder(allOrder)
     }
 
      fun searchSpecificPizza(id:Int){
-        val zaprosSpecificGet = dbDao.getSpecificPizza(id)
-            .subscribeOn(Schedulers.single())
-            .observeOn(AndroidSchedulers.mainThread())
-            .subscribe(
-                {
-                    onMylistenerGetSpecificDataRoom?.invoke(it)
-                },
-                {
-                    Log.d("Error", it.localizedMessage)
-                }
-            )
-
-        compositeDisposable.add(
-            zaprosSpecificGet
-        )
+     useCaseOperationInSpecificPizza.searchSpecificPizza(id)
     }
 
     fun getSpecificPizza(specificPizza: (item: PizzaModel) -> Unit){
-        onMylistenerGetSpecificDataRoom = specificPizza
+
+        useCaseOperationInSpecificPizza.getSpecificPizza(specificPizza)
+
     }
 
     private fun getAllPizzaRoom(){
-        val zaprosGetAllPiza = dbDao.getPizza()
-            .subscribeOn(Schedulers.single())
-            .observeOn(AndroidSchedulers.mainThread())
-            .subscribe(
-                {
-                    onMylistenerGetAllDataRoom?.invoke(it)
-                },
-                {
-                    Log.d("Error", it.localizedMessage)
-                }
-            )
-
-        compositeDisposable.add(
-            zaprosGetAllPiza
-        )
+        useCaseFragmentMainMenu.getAllPizzaFromDb(onMylistenerGetAllDataRoom)
     }
 
     fun insertDataRoom() {
         insertPizzaRoom {
             for(i in it.indices)
             {
-                val zaprosDB = dbDao.insertPizza(it[i])
-                    .subscribeOn(Schedulers.single())
-                    .observeOn(AndroidSchedulers.mainThread())
-                    .subscribe()
-
-                compositeDisposable.add(
-                    zaprosDB
-                )
+                useCaseFragmentMainMenu.insertPizzaToDB(it[i])
             }
-
             getAllPizzaRoom()
         }
-
     }
 
     fun searchSpecificOrderPizza(name:String){
-        val zaprosSpecificOrderPizza = dbDao.getSpecificOrferPizza(name)
-            .subscribeOn(Schedulers.single())
-            .observeOn(AndroidSchedulers.mainThread())
-            .subscribe(
-                {
-                    onMylistenerGetSpecificOrderPizza?.invoke(it)
-                    //Log.d("qqqqq", "on est")
-                },
-                {
-                    Log.d("Error", it.localizedMessage)
-                }
-            )
-
-        compositeDisposable.add(
-            zaprosSpecificOrderPizza
-        )
+        useCaseOperationInSpecificPizza.searchSpecificOrderPizza(name)
     }
 
     fun getSpecificOrderPizza(order: (item: CartModel) -> Unit){
-        onMylistenerGetSpecificOrderPizza = order
+        useCaseOperationInSpecificPizza.getSpecificOrderPizza(order)
     }
 
     fun getAllPizza(listPizza: (item: List<PizzaModel>) -> Unit){

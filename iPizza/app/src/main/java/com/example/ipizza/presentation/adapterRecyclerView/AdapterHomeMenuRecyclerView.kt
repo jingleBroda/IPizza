@@ -10,7 +10,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.ipizza.R
 import com.example.ipizza.databinding.HomeMenuRowBinding
-import com.example.ipizza.data.retrofit.PizzaModel
+import com.example.ipizza.domain.model.PizzaModel
 
 
 class AdapterHomeMenuRecyclerView(pizzaList:List<PizzaModel>?, context: Context ): RecyclerView.Adapter<AdapterHomeMenuRecyclerView.ViewHolder>() {

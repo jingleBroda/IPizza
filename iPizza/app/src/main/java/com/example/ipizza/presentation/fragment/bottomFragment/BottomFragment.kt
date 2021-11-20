@@ -1,6 +1,7 @@
 package com.example.ipizza.presentation.fragment.bottomFragment
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -9,7 +10,7 @@ import androidx.lifecycle.ViewModelProvider
 import com.bumptech.glide.Glide
 import com.example.ipizza.R
 import com.example.ipizza.presentation.contract.navigator
-import com.example.ipizza.data.dataBase.CartModel
+import com.example.ipizza.domain.model.CartModel
 import com.example.ipizza.databinding.BottomSheetLayoutBinding
 import com.example.ipizza.presentation.fragment.PreviewPizzaFragment.PreviewPizzaFragment
 import com.example.ipizza.presentation.fragment.FragmentMainMenu.FragmentMainMenu
@@ -74,6 +75,7 @@ class BottomFragment() : BottomSheetDialogFragment() {
         super.onStart()
 
         viewModel.getSpecificPizza {
+
             namePizza = it.name
             descriptPizza = it.description
             costPizza = it.price.toString()
@@ -113,9 +115,11 @@ class BottomFragment() : BottomSheetDialogFragment() {
 
             }
 
+
+
             binding.previewPizza.setOnClickListener(){
                 this.dismiss()
-                val fragment = PreviewPizzaFragment.newInstance(urlImgPizza,namePizza, costPizza)
+                val fragment = PreviewPizzaFragment.newInstance(idPizza)//urlImgPizza,namePizza, costPizza)
                 navigator().showNewScreen(fragment)
             }
         }

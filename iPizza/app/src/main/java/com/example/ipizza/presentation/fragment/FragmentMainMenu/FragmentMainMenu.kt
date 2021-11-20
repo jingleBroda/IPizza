@@ -3,6 +3,7 @@ package com.example.ipizza.presentation.fragment.FragmentMainMenu
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
+import android.util.Log
 import android.view.KeyEvent
 import android.view.LayoutInflater
 import android.view.View
@@ -16,11 +17,11 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.ipizza.R
 import com.example.ipizza.presentation.fragment.bottomFragment.BottomFragment
 import com.example.ipizza.presentation.contract.navigator
-import com.example.ipizza.data.dataBase.CartModel
+import com.example.ipizza.domain.model.CartModel
 import com.example.ipizza.databinding.FragmentMainMenuBinding
 import com.example.ipizza.presentation.fragment.CartFragment.CartFragment
 import com.example.ipizza.presentation.adapterRecyclerView.AdapterHomeMenuRecyclerView
-import com.example.ipizza.data.retrofit.PizzaModel
+import com.example.ipizza.domain.model.PizzaModel
 
 
 class FragmentMainMenu() : Fragment(), TextView.OnEditorActionListener{

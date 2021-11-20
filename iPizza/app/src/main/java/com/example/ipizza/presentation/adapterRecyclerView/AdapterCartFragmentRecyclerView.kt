@@ -7,7 +7,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.ipizza.R
-import com.example.ipizza.data.dataBase.CartModel
+import com.example.ipizza.domain.model.CartModel
 import com.example.ipizza.databinding.CartRecviewRowBinding
 
 class AdapterCartFragmentRecyclerView(orderList:List<CartModel>, context: Context): RecyclerView.Adapter<AdapterCartFragmentRecyclerView.ViewHolder>() {
@@ -28,7 +28,7 @@ class AdapterCartFragmentRecyclerView(orderList:List<CartModel>, context: Contex
         val increaseOrder = binding.buttonPlus
         val decreaseOrder = binding.buttonMinus
 
-        fun bind(listIteam:CartModel){
+        fun bind(listIteam: CartModel){
             namePizza.text = listIteam.name
             priceOrder.text = listIteam.price.toString()+"₽"
             countPizza.text = listIteam.quantity.toString()

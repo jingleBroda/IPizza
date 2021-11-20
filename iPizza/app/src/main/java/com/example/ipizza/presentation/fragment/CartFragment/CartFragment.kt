@@ -10,7 +10,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.ipizza.R
 import com.example.ipizza.presentation.contract.navigator
-import com.example.ipizza.data.dataBase.CartModel
+import com.example.ipizza.domain.model.CartModel
 import com.example.ipizza.databinding.FragmentCartBinding
 import com.example.ipizza.presentation.fragment.EndOrderFragment.EndOrderFragment
 import com.example.ipizza.presentation.fragment.FragmentMainMenu.FragmentMainMenu

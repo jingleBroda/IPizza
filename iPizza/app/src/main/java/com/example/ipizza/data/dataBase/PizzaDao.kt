@@ -1,7 +1,8 @@
 package com.example.ipizza.data.dataBase
 
 import androidx.room.*
-import com.example.ipizza.data.retrofit.PizzaModel
+import com.example.ipizza.domain.model.PizzaModel
+import com.example.ipizza.domain.model.CartModel
 import io.reactivex.rxjava3.core.Completable
 
 import io.reactivex.rxjava3.core.Single

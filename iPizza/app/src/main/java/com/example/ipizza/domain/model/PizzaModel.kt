@@ -1,4 +1,4 @@
-package com.example.ipizza.data.retrofit
+package com.example.ipizza.domain.model
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey
