@@ -76,8 +76,12 @@ class FragmentMainMenu() : Fragment(), TextView.OnEditorActionListener{
 
             viewModel.getAllOrder {
                 val costOrder = showCostOrder(it)
+                /*
                 binding.goToCartinMenu.text =
                     "Checkout                                                       " + costOrder.toString() + "₽"
+
+                 */
+                binding.costCart.text = costOrder.toString() + "₽"
             }
 
             binding.goToCartinMenu.setOnClickListener(){
@@ -133,8 +137,8 @@ class FragmentMainMenu() : Fragment(), TextView.OnEditorActionListener{
         if(cartNoNull) {
             viewModel.getAllOrder {
                 val costOrder = showCostOrder(it)
-                binding.goToCartinMenu.text =
-                    "Checkout                                                                     " + costOrder.toString() + "₽"
+                binding.costCart.text = costOrder.toString() + "₽"
+                //binding.goToCartinMenu.text = "Checkout "+costOrder.toString() + "₽"
             }
         }
 

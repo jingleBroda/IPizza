@@ -66,14 +66,16 @@ class CartFragment : Fragment() {
             adapter.update(orderList)
 
             val costOrder = showCostOrder(it)
-            binding.placeOrderButton.text = "Place order                                                       "+ costOrder.toString()+"₽"
+
+            binding.costCartInCartFragment.text = costOrder.toString()+"₽"
+
         }
 
         adapter.setOnVariationOrderCount {
             viewModel.updateOrder(it)
 
             val costOrder = showCostOrder(adapter.getCurrentList())
-            binding.placeOrderButton.text = "Place order                                                       "+ costOrder.toString()+"₽"
+            binding.costCartInCartFragment.text = costOrder.toString()+"₽"
         }
 
         binding.placeOrderButton.setOnClickListener(){

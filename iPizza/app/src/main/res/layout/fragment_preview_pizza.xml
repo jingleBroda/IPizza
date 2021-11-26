@@ -45,10 +45,11 @@
         android:layout_marginStart="16dp"
         android:layout_marginEnd="16dp"
         android:layout_marginBottom="16dp"
+        android:fontFamily="@font/lato_black"
         android:paddingLeft="20dp"
         android:paddingTop="20dp"
         android:paddingBottom="20dp"
-        android:text="@string/costPizza"
+        android:text="@string/add_to_cart"
         android:textAlignment="textStart"
         android:textAllCaps="false"
         android:textColor="#424242"
@@ -83,5 +84,21 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.0" />
+
+    <TextView
+        android:id="@+id/costCartPreview"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="20dp"
+        android:elevation="2dp"
+        android:fontFamily="@font/lato_black"
+        android:textColor="#424242"
+        android:textSize="18sp"
+        app:layout_constraintBottom_toBottomOf="@+id/goCartDetailsButton"
+        app:layout_constraintEnd_toEndOf="@+id/goCartDetailsButton"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="@+id/goCartDetailsButton"
+        app:layout_constraintTop_toTopOf="@+id/goCartDetailsButton"
+        app:layout_constraintVertical_bias="0.488" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

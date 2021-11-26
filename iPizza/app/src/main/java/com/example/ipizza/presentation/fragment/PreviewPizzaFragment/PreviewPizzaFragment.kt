@@ -86,10 +86,7 @@ companion object {
                 }
             })
 
-            //я буду исправлять это недоразумение, но пока у меня не получилось найти информацию, как сделать выравнивание
-            //как в макете
-            binding.goCartDetailsButton.text =
-                "Add to cart                                   " + costPizza + "₽"
+            binding.costCartPreview.text = costPizza+"₽"
 
 
 

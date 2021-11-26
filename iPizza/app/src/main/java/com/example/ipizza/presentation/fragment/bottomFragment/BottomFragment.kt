@@ -90,11 +90,7 @@ class BottomFragment() : BottomSheetDialogFragment() {
                 .centerCrop()
                 .into(binding.previewPizza)
 
-            //я буду исправлять это недоразумение, но пока у меня не получилось найти информацию, как сделать выравнивание
-            //как в макете
-            binding.addCartButton.text =
-                "Add to cart                                                          " + costPizza+ "₽"
-
+            binding.costCartBottomLayout.text = costPizza+ "₽"
 
             viewModel.searchSpecificOrderPizza(it.name)
 
